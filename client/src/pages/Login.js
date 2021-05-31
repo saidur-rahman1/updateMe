@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: '80%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -37,9 +37,8 @@ export default function Login() {
   const classes = useStyles();
 
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
+    <Grid component="main">
+      <Grid className={classes.paper}>
         <Typography component="h1" variant="h5">
           Login
         </Typography>
@@ -88,7 +87,7 @@ export default function Login() {
             </Grid>
           </Grid>
         </form>
-      </div>
-    </Container>
+      </Grid>
+    </Grid>
   );
 }
