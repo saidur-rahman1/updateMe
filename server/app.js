@@ -3,6 +3,7 @@ const express = require("express");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const mongoose = require('mongoose');
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
@@ -35,5 +36,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.json({ error: err });
 });
+
+mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
+.then(() => console.log("Connected to MongoDB"))
+.catch(error => console.error("Could not connect to MongoDB", error));
 
 module.exports = app;
