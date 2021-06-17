@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -33,8 +33,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialValues = {
+  id: 0,
+  email: '',
+  password: ''
+};
+
 export default function Login() {
   const classes = useStyles();
+
+  const [values, setValues] = useState(initialValues);
+
+  const handleInputChange = e => {
+    const { name, value } = e.target
+    setValues({
+      ...values,
+      [name]:value
+    })
+  }
 
   return (
     <Grid component="main">
@@ -53,6 +69,8 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={values.email}
+            onChange={handleInputChange}
           />
           <TextField
             variant="outlined"
@@ -64,6 +82,8 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={values.password}
+            onChange={handleInputChange}
           />
           <Button
             type="submit"
@@ -81,7 +101,7 @@ export default function Login() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
