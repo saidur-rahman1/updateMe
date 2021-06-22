@@ -36,7 +36,12 @@ const useStyles = makeStyles((theme) => ({
 const initialValues = {
   id: 0,
   email: '',
-  password: ''
+  emailError: false,
+  emailHelpertext: '',
+
+  password: '',
+  passwordError: false,
+  passwordHelpertext: ''
 };
 
 export default function Login() {
@@ -52,14 +57,61 @@ export default function Login() {
     })
   }
 
+  const finalValidation = () => {
+    let isError = false;
+    const errors = {};
+
+    let emailChecker = (/$^|.+@.+..+/).test(values.email);
+    if (!emailChecker || values.email == '') {
+      isError = true;
+      errors.emailHelpertext = "Enter valid email";
+      errors.emailError = true;
+    }
+
+    if (!(values.password.length > 5)) {
+      isError = true;
+      errors.passwordHelpertext = "Minimum 6 characters needed";
+      errors.passwordError = true;
+    } 
+
+    if (isError) {
+      setValues({
+        ...values,
+        ...errors
+      });
+    }
+
+    return isError;
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    const err = finalValidation();
+    if (!err) {
+      setValues({
+        ...values,
+        id: 0,
+        email: '',
+        emailError: false,
+        emailHelpertext: '',
+
+        password: '',
+        passwordError: false,
+        passwordHelpertext: ''
+      });
+    }
+  }
+
   return (
     <Grid component="main">
       <Grid className={classes.paper}>
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <TextField
+            error={values.emailError}
+            helperText={values.emailHelpertext}
             variant="outlined"
             margin="normal"
             required
@@ -73,6 +125,8 @@ export default function Login() {
             onChange={handleInputChange}
           />
           <TextField
+            error={values.passwordError}
+            helperText={values.passwordHelpertext}
             variant="outlined"
             margin="normal"
             required
