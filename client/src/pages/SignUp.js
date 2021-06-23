@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -59,17 +52,7 @@ const initialValues = {
 export default function SignUp() {
   const classes = useStyles();
 
-  // const passwordMatch = () => {
-  //   let value1 = values.password1.toString()
-  //   let value2 = values.password2.toString();
-  //   if (value1 === value2) return "";
-  //   return "Passwords don't match";
-  // }
-
-  // email regex => (/$^|.+@.+..+/).test()
-
   const [values, setValues] = useState(initialValues);
-  //const [errors, setErrors] = useState({});
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -79,38 +62,39 @@ export default function SignUp() {
     })
   }
 
-  // const initialValidation = () => {
-  //   let temp = {}
-  //   temp.firstName = values.firstName?"":"Enter first name"
-  //   temp.lastName = values.lastName?"":"Enter last name"
-  //   temp.email = (/$^|.+@.+..+/).test(values.email)?"":"Enter valid email"
-  //   temp.password1 = values.password1.length>5?"":"Password should have minimum 6 characters"
-  //   temp.password2 = passwordMatch()
-  //   setErrors({
-  //     ...temp
-  //   })
-
-  //   return Object.values(temp).every(x => x == "")
-  // }
-
   const finalValidation = () => {
     let isError = false;
-    const errors = {};
+    const errors = {
+      firstnameError: false,
+      firstnameHelpertext: '',
 
-    if (values.firstName == '') {
+      lastnameError: false,
+      lastnameHelpertext: '',
+
+      emailError: false,
+      emailHelpertext: '',
+
+      password1Error: false,
+      password1Helpertext: '',
+
+      password2Error: false,
+      password2Helpertext: ''
+    };
+
+    if (values.firstName === '') {
       isError = true;
       errors.firstnameHelpertext = "Enter first name";
       errors.firstnameError = true;
     }
 
-    if (values.lastName == '') {
+    if (values.lastName === '') {
       isError = true;
       errors.lastnameHelpertext = "Enter last name";
       errors.lastnameError = true;
     }
 
     let emailChecker = (/$^|.+@.+..+/).test(values.email);
-    if (!emailChecker || values.email == '') {
+    if (!emailChecker || values.email === '') {
       isError = true;
       errors.emailHelpertext = "Enter valid email";
       errors.emailError = true;
@@ -131,19 +115,16 @@ export default function SignUp() {
       errors.password2Error = true;
     }
 
-    if (isError) {
-      setValues({
-        ...values,
-        ...errors
-      });
-    }
+    setValues({
+      ...values,
+      ...errors
+    });
 
     return isError;
   }
 
   const handleSubmit = e => {
     e.preventDefault()
-    //window.alert('testing.....');
     const err = finalValidation();
     if (!err) {
       setValues({
@@ -173,7 +154,7 @@ export default function SignUp() {
   }
 
   return (
-    <Grid component="main" maxWidth="xs">
+    <Grid component="main">
       <Grid className={classes.paper}>
         <Typography component="h1" variant="h5">
           Sign up
