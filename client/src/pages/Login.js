@@ -1,17 +1,10 @@
-import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,8 +26,78 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const initialValues = {
+  id: 0,
+  email: '',
+  emailError: false,
+  emailHelpertext: '',
+
+  password: '',
+  passwordError: false,
+  passwordHelpertext: ''
+};
+
 export default function Login() {
   const classes = useStyles();
+
+  const [values, setValues] = useState(initialValues);
+
+  const handleInputChange = e => {
+    const { name, value } = e.target
+    setValues({
+      ...values,
+      [name]:value
+    })
+  }
+
+  const finalValidation = () => {
+    let isError = false;
+    const errors = {
+      emailError: false,
+      emailHelpertext: '',
+
+      passwordError: false,
+      passwordHelpertext: ''
+    };
+
+    let emailChecker = (/$^|.+@.+..+/).test(values.email);
+    if (!emailChecker || values.email === '') {
+      isError = true;
+      errors.emailHelpertext = "Enter valid email";
+      errors.emailError = true;
+    }
+
+    if (!(values.password.length > 5)) {
+      isError = true;
+      errors.passwordHelpertext = "Minimum 6 characters needed";
+      errors.passwordError = true;
+    } 
+
+    setValues({
+      ...values,
+      ...errors
+    });
+
+    return isError;
+  }
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    const err = finalValidation();
+    if (!err) {
+      setValues({
+        ...values,
+        id: 0,
+        email: '',
+        emailError: false,
+        emailHelpertext: '',
+
+        password: '',
+        passwordError: false,
+        passwordHelpertext: ''
+      });
+    }
+  }
 
   return (
     <Grid component="main">
@@ -42,8 +105,10 @@ export default function Login() {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <TextField
+            error={values.emailError}
+            helperText={values.emailHelpertext}
             variant="outlined"
             margin="normal"
             required
@@ -53,8 +118,12 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
+            value={values.email}
+            onChange={handleInputChange}
           />
           <TextField
+            error={values.passwordError}
+            helperText={values.passwordHelpertext}
             variant="outlined"
             margin="normal"
             required
@@ -64,6 +133,8 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
+            value={values.password}
+            onChange={handleInputChange}
           />
           <Button
             type="submit"
@@ -81,7 +152,7 @@ export default function Login() {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2">
+              <Link href="/" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
