@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 const signupRouter = require("./routes/signup");
+const User = require("./models/user");
 
 const { json, urlencoded } = express;
 
@@ -43,5 +44,24 @@ app.use(function(err, req, res, next) {
 mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
 .then(() => console.log("Connected to MongoDB"))
 .catch(error => console.error("Could not connect to MongoDB", error));
+
+async function createUser() {
+  try {
+    let user = new User({
+      firstName: 'first2',
+      lastName: 'last2',
+      email: 'first2.last2@test.com',
+      password1: '123456',
+      password2: '123456'
+    });
+    const result = await user.save();
+    console.log(result);
+  } catch (error) {
+    console.log(error);
+  }
+  
+}
+
+createUser();
 
 module.exports = app;
