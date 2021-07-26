@@ -1,36 +1,50 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
+const mongoose = require('mongoose');
 
-//app.use(express.json());
+const User = require("../models/user");
 
-const users = [
-  {firstName: 'f1', lastName: 'l1', email: 'f1l1@test.com', password1: '123456', password2: '123456'}
-];
+router.post("/signup", async (req, res) => {
+    const { firstName, lastName, email, password1, password2 } = req.body;
+    let errorCheck = false;
 
-router.post("/signup", (req, res) => {
-    let firstName = req.body.firstName;
-    let lastName = req.body.lastName;
-    let email = req.body.email;
-    let password1 = req.body.password1;
-    let password2 = req.body.password2;
-    if (firstName && lastName && email && password1 && password2) {
-      let emailChecker = (/$^|.+@.+..+/).test(values.email);
-      if (emailChecker) {
-        if (password1.length() > 5) {
-          
-        } else {
-          res.status(400).send("Password should be atleast 6 characters");
-        }
-      } else {
-        res.status(400).send("Invalid email");
-      }
-    } else {
-      res.status(400).send("All required fields not complete");
+    if (!firstName && !lastName && !email && !password1 && !password2) {
+      errorCheck = true;
+      return res.status(400).send("All required fields not complete");
     }
-    users.push(user);
-    res.status(200).send("Registration successful");
-    //if (!user) res.status(404).send("user not found");
-    res.send(user);
+    
+    let isValidEmail = (/$^|.+@.+..+/).test(values.email);
+    if (!isValidEmail) {
+      errorCheck = true;
+      return res.status(400).send("Invalid email");
+    }
+
+    if (password1.length < 6) {
+      errorCheck = true;
+      return res.status(400).send("Password should be at least 6 characters");
+    }
+
+    let user = await User.findOne({email: email});
+    if (user) {
+      errorCheck = true;
+      return res.status(400).send("Account already registered");
+    }
+
+    if (!errorCheck) {
+      user = new User({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password1
+      });
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(user.password, salt);
+      const result = await user.save();
+      console.log(result);
+      res.send(user);
+      res.status(201).send("Registration successful");
+    }
 });
 
 module.exports = router;

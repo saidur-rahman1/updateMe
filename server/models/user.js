@@ -11,13 +11,10 @@ const User = mongoose.model('User', new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
-    password1: {
-        type: String,
-        required: true
-    },
-    password2: {
+    password: {
         type: String,
         required: true
     }
