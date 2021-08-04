@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true
-    }).send();
+    });
 
     res.status(201).send("Login successful");
 
