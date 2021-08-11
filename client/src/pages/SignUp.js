@@ -5,6 +5,7 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -123,10 +124,27 @@ export default function SignUp() {
     return isError;
   }
 
-  const handleSubmit = e => {
+  async function handleSubmit (e) {
+  //const handleSubmit = e => {
     e.preventDefault()
+    
     const err = finalValidation();
     if (!err) {
+      let fnSignup = values.firstName;
+      let lnSignup = values.lastName;
+      let emSignup = values.email;
+      let p1Signup = values.password1;
+      let p2Signup = values.password2;
+      const signUpData = {
+        fnSignup, lnSignup, emSignup, p1Signup, p2Signup
+      };
+
+      try {
+        await axios.post("http://localhost:3001/signup/", signUpData);
+      } catch (err) {
+        console.log(err);
+      }
+
       setValues({
         ...values,
         id: 0,
