@@ -130,13 +130,13 @@ export default function SignUp() {
     
     const err = finalValidation();
     if (!err) {
-      let fnSignup = values.firstName;
-      let lnSignup = values.lastName;
-      let emSignup = values.email;
-      let p1Signup = values.password1;
-      let p2Signup = values.password2;
+      let firstName = values.firstName;
+      let lastName = values.lastName;
+      let email = values.email;
+      let password1 = values.password1;
+      let password2 = values.password2;
       const signUpData = {
-        fnSignup, lnSignup, emSignup, p1Signup, p2Signup
+        firstName, lastName, email, password1, password2
       };
 
       try {
@@ -169,6 +169,7 @@ export default function SignUp() {
         password2Helpertext: ''
       });
     }
+  
   }
 
   return (

@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 const User = require("../models/user");
 
-router.post("/signup", async (req, res) => {
+router.post("/", async (req, res) => {
 
   try {
     
@@ -14,7 +14,7 @@ router.post("/signup", async (req, res) => {
       return res.status(400).send("All required fields not complete");
     }
     
-    let isValidEmail = (/$^|.+@.+..+/).test(values.email);
+    let isValidEmail = (/$^|.+@.+..+/).test(email);
     if (!isValidEmail) return res.status(400).send("Invalid email");
 
     if (password1.length < 6) return res.status(400).send("Password should be at least 6 characters");
