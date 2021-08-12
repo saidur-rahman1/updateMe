@@ -10,6 +10,7 @@ const cors = require('cors');
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 const signupRouter = require("./routes/signup");
+const loginRouter = require("./routes/login");
 
 const { json, urlencoded } = express;
 
@@ -32,6 +33,7 @@ app.use(cors({
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/signup", signupRouter);
+app.use("/login", loginRouter);
 
 
 // catch 404 and forward to error handler

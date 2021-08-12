@@ -125,7 +125,6 @@ export default function SignUp() {
   }
 
   async function handleSubmit (e) {
-  //const handleSubmit = e => {
     e.preventDefault()
     
     const err = finalValidation();

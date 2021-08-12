@@ -5,6 +5,7 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -81,10 +82,22 @@ export default function Login() {
     return isError;
   }
 
-  const handleSubmit = e => {
+  async function handleSubmit (e) {
     e.preventDefault()
     const err = finalValidation();
     if (!err) {
+      let email = values.email;
+      let password = values.password;
+      const loginData = {
+        email, password
+      };
+
+      try {
+        await axios.post("http://localhost:3001/login/", loginData);
+      } catch (err) {
+        console.log(err);
+      }
+
       setValues({
         ...values,
         id: 0,
