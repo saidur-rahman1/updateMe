@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
@@ -6,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+//import Dashboard from './Dashboard';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -82,6 +84,8 @@ export default function Login() {
     return isError;
   }
 
+  const [redirect, setRedirect] = useState();
+
   async function handleSubmit (e) {
     e.preventDefault()
     const err = finalValidation();
@@ -93,7 +97,18 @@ export default function Login() {
       };
 
       try {
-        await axios.post("http://localhost:3001/login/", loginData);
+        await axios.post("http://localhost:3001/login/", loginData).then((outcome) => {
+          if (outcome.status === 201) {
+            console.log("Welcome to Dashboard");
+            // setRedirect('/dashboard');
+            // if (redirect) {
+            //   return <Redirect push to={redirect} />;
+            // }
+            window.location = '/dashboard';
+          }
+        }, (error) => {
+          console.log(error);
+        });
       } catch (err) {
         console.log(err);
       }
@@ -112,66 +127,66 @@ export default function Login() {
     }
   }
 
-  return (
-    <Grid component="main">
-      <Grid className={classes.paper}>
-        <Typography component="h1" variant="h5">
-          Login
-        </Typography>
-        <form className={classes.form} onSubmit={handleSubmit} noValidate>
-          <TextField
-            error={values.emailError}
-            helperText={values.emailHelpertext}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            value={values.email}
-            onChange={handleInputChange}
-          />
-          <TextField
-            error={values.passwordError}
-            helperText={values.passwordHelpertext}
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            autoComplete="current-password"
-            value={values.password}
-            onChange={handleInputChange}
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
+    return (
+      <Grid component="main">
+        <Grid className={classes.paper}>
+          <Typography component="h1" variant="h5">
             Login
-          </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
+          </Typography>
+          <form className={classes.form} onSubmit={handleSubmit} noValidate>
+            <TextField
+              error={values.emailError}
+              helperText={values.emailHelpertext}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              value={values.email}
+              onChange={handleInputChange}
+            />
+            <TextField
+              error={values.passwordError}
+              helperText={values.passwordHelpertext}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+              value={values.password}
+              onChange={handleInputChange}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Login
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-            <Grid item>
-              <Link href="/" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
-        </form>
+          </form>
+        </Grid>
       </Grid>
-    </Grid>
-  );
+    )
 }
