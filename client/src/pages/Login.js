@@ -7,7 +7,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-//import Dashboard from './Dashboard';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -97,18 +96,11 @@ export default function Login() {
       };
 
       try {
-        await axios.post("http://localhost:3001/login/", loginData).then((outcome) => {
-          if (outcome.status === 201) {
-            console.log("Welcome to Dashboard");
-            // setRedirect('/dashboard');
-            // if (redirect) {
-            //   return <Redirect push to={redirect} />;
-            // }
-            window.location = '/dashboard';
-          }
-        }, (error) => {
-          console.log(error);
-        });
+        let outcome = await axios.post("http://localhost:3001/login/", loginData);
+        console.log("Login successful");
+        if (outcome.status === 201) {
+          setRedirect('/dashboard');
+        }
       } catch (err) {
         console.log(err);
       }
@@ -125,6 +117,10 @@ export default function Login() {
         passwordHelpertext: ''
       });
     }
+  }
+
+  if (redirect) {
+    return <Redirect to={redirect} />
   }
 
     return (

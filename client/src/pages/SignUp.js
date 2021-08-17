@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
@@ -124,6 +125,8 @@ export default function SignUp() {
     return isError;
   }
 
+  const [redirect, setRedirect] = useState();
+
   async function handleSubmit (e) {
     e.preventDefault()
     
@@ -139,7 +142,11 @@ export default function SignUp() {
       };
 
       try {
-        await axios.post("http://localhost:3001/signup/", signUpData);
+        let outcome = await axios.post("http://localhost:3001/signup/", signUpData);
+        console.log("Registration successful");
+        if (outcome.status === 201) {
+          setRedirect('/dashboard');
+        }
       } catch (err) {
         console.log(err);
       }
@@ -169,6 +176,10 @@ export default function SignUp() {
       });
     }
   
+  }
+
+  if (redirect) {
+    return <Redirect to={redirect} />
   }
 
   return (
