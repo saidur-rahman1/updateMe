@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -123,10 +125,32 @@ export default function SignUp() {
     return isError;
   }
 
-  const handleSubmit = e => {
+  const [redirect, setRedirect] = useState();
+
+  async function handleSubmit (e) {
     e.preventDefault()
+    
     const err = finalValidation();
     if (!err) {
+      let firstName = values.firstName;
+      let lastName = values.lastName;
+      let email = values.email;
+      let password1 = values.password1;
+      let password2 = values.password2;
+      const signUpData = {
+        firstName, lastName, email, password1, password2
+      };
+
+      try {
+        let outcome = await axios.post("http://localhost:3001/signup/", signUpData);
+        console.log("Registration successful");
+        if (outcome.status === 201) {
+          setRedirect('/dashboard');
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
       setValues({
         ...values,
         id: 0,
@@ -151,6 +175,11 @@ export default function SignUp() {
         password2Helpertext: ''
       });
     }
+  
+  }
+
+  if (redirect) {
+    return <Redirect to={redirect} />
   }
 
   return (

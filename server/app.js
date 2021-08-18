@@ -4,25 +4,36 @@ const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require('mongoose');
-var bodyParser = require('body-parser');
+const cors = require('cors');
+
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
 const signupRouter = require("./routes/signup");
+const loginRouter = require("./routes/login");
 
 const { json, urlencoded } = express;
 
 var app = express();
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
+app.use(cors({
+  origin: ["http://localhost:3001/"]
+}));
 
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.use("/signup", signupRouter);
+app.use("/login", loginRouter);
 
 
 // catch 404 and forward to error handler
@@ -44,8 +55,5 @@ app.use(function(err, req, res, next) {
 mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
 .then(() => console.log("Connected to MongoDB"))
 .catch(error => console.error("Could not connect to MongoDB", error));
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 
 module.exports = app;
