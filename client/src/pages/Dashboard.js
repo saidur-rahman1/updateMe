@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import axios from 'axios';
 import { Paper } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Switch from '@material-ui/core/Switch';
@@ -23,8 +18,13 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    padding: '16px',
-    height: '100vh'
+    padding: '1rem',
+    height: '100rem'
+  },
+  topBar: {
+    backgroundColor: theme.palette.primary.main,
+    height:'5rem',
+    padding:'1.5rem'
   },
   avatar: {
     margin: theme.spacing(1),
@@ -60,38 +60,40 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <Grid container>
-        <Grid item xs={12} container style={{backgroundColor:"#2196f3", height:"50px"}}>
-          <Grid item xs={3} container style={{alignItems:'center', justifyContent: 'center'}}>
-            <Typography component="h1" variant="h5" style={{ cursor: 'pointer', color: 'white' }}>
+        <Grid item xs={12} container className={classes.topBar}>
+          <Grid item xs={3} container alignItems="center" justifyContent= "center">
+            <Typography component="h2" variant="h5" style={{ cursor: 'pointer', color: 'white' }}>
                 update
             </Typography>
-            <Typography component="h1" variant="h5" style={{ cursor: 'pointer', color: 'black' }}>
+            <Typography component="h2" variant="h5" style={{ cursor: 'pointer', color: '#284097' }}>
                 Me
             </Typography>
           </Grid>
           <Grid item xs={7} />
-          <Grid item xs={2} container style={{alignItems:'center', justifyContent: 'center'}}>
-            <Typography component="h1" variant="h5" style={{ cursor: 'pointer', color: 'black' }}>
+          <Grid item xs={2} container style={{alignItems:'center', justifyContent: 'right'}}>
+            <Typography component="h2" variant="h5" style={{ cursor: 'pointer', color: 'lightgrey' }}>
                 <SettingsIcon />
             </Typography>
           </Grid>
         </Grid>
+      </Grid>
+      <Grid container>
         <Grid item xs={3} container>
           <Paper xs={3} className={classes.paper}>
-            <Grid item spacing={1} container style={{alignItems:'center'}}>
-              <Grid item><img src={reddit} alt="reddit" width="20" height="20"/></Grid>
-              <Grid item style={{width: '210px'}}><Typography>Reddit</Typography></Grid>
+            <Grid item spacing={1} container style={{alignItems:'center', padding: '0.5rem'}}>
+              <Grid item><img src={reddit} alt="reddit" width="35rem" height="35rem"/></Grid>
+              <Grid item style={{width: '11rem'}}><Typography component="h2" variant="h6">Reddit</Typography></Grid>
               <Grid item><Switch checked={values.reddit} onChange={handleInputChange} name="reddit" color="primary" /></Grid>
             </Grid>
-            <Grid item spacing={1} container style={{alignItems:'center'}}>
-              <Grid item><img src={bi} alt="bi" width="20" height="20"/></Grid>
-              <Grid item style={{width: '210px'}}><Typography>Business Insider</Typography></Grid>
-              <Grid item><Switch checked={values.bi} onChange={handleInputChange} name="bi" color="primary" /></Grid>
-            </Grid>
-            <Grid item spacing={1} container style={{alignItems:'center'}}>
-              <Grid item><img src={twitter} alt="twitter" width="20" height="20"/></Grid>
-              <Grid item style={{width: '210px'}}><Typography>Twitter</Typography></Grid>
+            <Grid item spacing={1} container style={{alignItems:'center', padding: '0.5rem'}}>
+              <Grid item><img src={twitter} alt="twitter" width="35rem" height="35rem"/></Grid>
+              <Grid item style={{width: '11rem'}}><Typography component="h2" variant="h6">Twitter</Typography></Grid>
               <Grid item><Switch checked={values.twitter} onChange={handleInputChange} name="twitter" color="primary" /></Grid>
+            </Grid>
+            <Grid item spacing={1} container style={{alignItems:'center', padding: '0.5rem'}}>
+              <Grid item><img src={bi} alt="bi" width="35rem" height="35rem"/></Grid>
+              <Grid item style={{width: '11rem'}}><Typography component="h2" variant="h6">Business Insider</Typography></Grid>
+              <Grid item><Switch checked={values.bi} onChange={handleInputChange} name="bi" color="primary" /></Grid>
             </Grid>
           </Paper>
         </Grid>
