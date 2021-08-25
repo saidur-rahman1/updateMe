@@ -45,7 +45,6 @@ export default function SideBar() {
   
   
     return (
-        <Grid container>
           <Grid item xs={3} container>
             <Paper xs={3} className={classes.paper}>
               <Grid item spacing={1} container className={classes.switch}>
@@ -65,6 +64,5 @@ export default function SideBar() {
               </Grid>
             </Paper>
           </Grid>
-        </Grid>
     );
   }
