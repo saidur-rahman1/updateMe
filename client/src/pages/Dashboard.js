@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import NavBar from '../components/NavBar';
 import SideBar from '../components/SideBar';
+import Mention from '../components/Mention';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,8 +28,13 @@ export default function Dashboard() {
       <NavBar />
       <Grid container>
         <SideBar />
-        <Grid item xs={9} container>
-          <Paper className={classes.paper} component="h2">My mentions</Paper>
+        <Grid xs={9} container>
+          <Paper className={classes.paper} component="h2">
+            My mentions
+            <Mention />
+            <Mention />
+            <Mention />
+          </Paper>
         </Grid>
       </Grid>
     </div>
