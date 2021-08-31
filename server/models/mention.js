@@ -12,7 +12,6 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
     platform: {
         type: String,
         required: true,
-        unique: true
     },
     image: {
         type: String,
