@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 
 const User = require("../models/user");
+const { Mention, getMentions } = require("../models/mention");
 
 router.post("/", async (req, res) => {
 
@@ -33,7 +34,19 @@ router.post("/", async (req, res) => {
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
+
+    // let mention = new Mention({
+    //   content: 'The new 16" Macbook is coming this October. This model is rumoured to come with the powerful M1X processor',
+    //   title: 'Apple\'s 16" Macbook with M1X processor coming this fall - Facebook',
+    //   platform: 'Facebook',
+    //   image: 'image-apple16-facebook',
+    //   date: new Date(),
+    //   popularity: '1'
+    // });
+    // await mention.save();
+
     res.status(201).send(user);
+    getMentions();
 
   } catch (error) {
     console.log(error);

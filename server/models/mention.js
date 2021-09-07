@@ -25,6 +25,33 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
         type: String,
         required: true
     }
-  }));
+}));
 
-  module.exports = Mention;
+async function getMentions () {
+    let qPlatform = 'facebook';
+    let qCompany = 'apple';
+
+    const regPlatform = `/.*${qPlatform}.*/i`;
+    const regCompany = `/.*${qCompany}.*/i`;
+
+    // /.*facebook.*/i
+    // /.*apple.*/i
+
+    try {
+        const mentions = await Mention
+        .find()
+        .or([
+            // {content: /.*{qPlatform}.*/i}, {content: /.*apple.*/i}
+            {$and: [{title: /.*facebook.*/i}, {title: /.*apple.*/i}]}, 
+            {$and: [{content: /.*facebook.*/i}, {content: /.*apple.*/i}]}
+        ]);
+        console.log(mentions);
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
+//Mention.createIndexes({ platform: 1 });
+
+module.exports = { Mention, getMentions };

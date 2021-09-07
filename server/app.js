@@ -54,7 +54,7 @@ app.use(function(err, req, res, next) {
   res.json({ error: err });
 });
 
-mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
+mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`, { useCreateIndex: true })
 .then(() => console.log("Connected to MongoDB"))
 .catch(error => console.error("Could not connect to MongoDB", error));
 
