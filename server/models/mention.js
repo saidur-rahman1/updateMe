@@ -27,31 +27,24 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
     }
 }));
 
-async function getMentions () {
-    let qPlatform = 'facebook';
-    let qCompany = 'apple';
+async function getMentions (platform, company) {
 
-    const regPlatform = `/.*${qPlatform}.*/i`;
-    const regCompany = `/.*${qCompany}.*/i`;
-
-    // /.*facebook.*/i
-    // /.*apple.*/i
+    const regPlatform = new RegExp(platform, "i");
+    const regCompany = new RegExp(company, "i");
 
     try {
         const mentions = await Mention
-        .find()
+        .find({ platform: regPlatform })
         .or([
-            // {content: /.*{qPlatform}.*/i}, {content: /.*apple.*/i}
-            {$and: [{title: /.*facebook.*/i}, {title: /.*apple.*/i}]}, 
-            {$and: [{content: /.*facebook.*/i}, {content: /.*apple.*/i}]}
-        ]);
+            {title: regCompany}, 
+            {content: regCompany}
+        ])
+        .exec();
         console.log(mentions);
     } catch (error) {
         console.log(error);
     }
     
 }
-
-//Mention.createIndexes({ platform: 1 });
 
 module.exports = { Mention, getMentions };

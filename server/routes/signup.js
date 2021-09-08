@@ -46,7 +46,7 @@ router.post("/", async (req, res) => {
     // await mention.save();
 
     res.status(201).send(user);
-    getMentions();
+    getMentions('facebook', 'apple');
 
   } catch (error) {
     console.log(error);
