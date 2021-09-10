@@ -14,8 +14,7 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
         required: true,
     },
     image: {
-        type: String,
-        required: true
+        type: String
     },
     date: {
         type: String,
@@ -40,7 +39,6 @@ async function getMentions (platform, company) {
             {content: regCompany}
         ])
         .exec();
-        console.log(mentions);
     } catch (error) {
         console.log(error);
     }
