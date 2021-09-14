@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const auth = require("../middlewares/auth");
 
 const User = require("../models/user");
+const reddit = require('./reddit');
 
 router.post("/", async (req, res) => {
 
@@ -33,6 +34,8 @@ router.post("/", async (req, res) => {
     });
 
     res.status(201).send("Login successful");
+
+    reddit('Google');
 
   } catch (error) {
     console.log(error);
