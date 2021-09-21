@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 const auth = require("../middlewares/auth");
 
 const User = require("../models/user");
-const reddit = require('./reddit');
 
 router.post("/", async (req, res) => {
 
