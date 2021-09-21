@@ -23,7 +23,6 @@ async function reddit(searchTerm) {
     } catch (err) {
         console.log(err);
     }
-    
 }
 
 module.exports = reddit;

@@ -35,8 +35,6 @@ router.post("/", async (req, res) => {
 
     res.status(201).send("Login successful");
 
-    reddit('Google');
-
   } catch (error) {
     console.log(error);
   }
