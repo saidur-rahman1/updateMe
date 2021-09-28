@@ -14,7 +14,7 @@ async function reddit(searchTerm) {
                 platform: 'Reddit',
                 image: elementImage,
                 date: new Date(),
-                popularity: '1'
+                popularity: element.upvote_ratio
             });
             mention.save();
         });

@@ -32,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
 export default function Mention(props) {
   const classes = useStyles();
 
+  let title = props.title;
+  let n = title.lastIndexOf(" ");
+  let title1 = title.substring(0, n);
+  let title2 = title.substring(n);
+
   return (
     <Paper className={classes.paper}>
         <Grid container spacing={2}>
@@ -43,10 +48,10 @@ export default function Mention(props) {
             <Grid item xs={12} sm container>
                 <Grid item container>
                     <Typography variant="h6">
-                        {props.title1}&nbsp;
+                        {title1}&nbsp;
                     </Typography>
                     <Typography variant="h6" color="primary">
-                        {props.title2}
+                        {title2}
                     </Typography>
                 </Grid>
                 <Grid item xs container direction="column" spacing={2}>
