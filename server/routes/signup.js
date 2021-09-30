@@ -4,14 +4,15 @@ const bcrypt = require("bcrypt");
 
 const User = require("../models/user");
 const { Mention, getMentions } = require("../models/mention");
+const reddit = require("../routes/reddit");
 
 router.post("/", async (req, res) => {
 
   try {
     
-    const { firstName, lastName, email, password1, password2 } = req.body;
+    const { email, company, password1, password2 } = req.body;
 
-    if (!firstName || !lastName || !email || !password1 || !password2) {
+    if (!email || !company || !password1 || !password2) {
       return res.status(400).send("All required fields not complete");
     }
     
@@ -26,14 +27,15 @@ router.post("/", async (req, res) => {
     if (user) return res.status(400).send("Account already registered");
 
     user = new User({
-      firstName: firstName,
-      lastName: lastName,
       email: email,
+      company: company,
       password: password1
     });
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
+
+    reddit(company);
 
     // let mention = new Mention({
     //   content: 'The new 16" Macbook is coming this October. This model is rumoured to come with the powerful M1X processor',

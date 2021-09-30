@@ -30,17 +30,13 @@ const useStyles = makeStyles((theme) => ({
 
 const initialValues = {
   id: 0,
-  firstName: '',
-  firstnameError: false,
-  firstnameHelpertext: '',
-
-  lastName: '',
-  lastnameError: false,
-  lastnameHelpertext: '',
-
   email: '',
   emailError: false,
   emailHelpertext: '',
+
+  company: '',
+  companyError: false,
+  companyHelpertext: '',
 
   password1: '',
   password1Error: false,
@@ -67,14 +63,11 @@ export default function SignUp() {
   const finalValidation = () => {
     let isError = false;
     const errors = {
-      firstnameError: false,
-      firstnameHelpertext: '',
-
-      lastnameError: false,
-      lastnameHelpertext: '',
-
       emailError: false,
       emailHelpertext: '',
+
+      companyError: false,
+      companyHelpertext: '',
 
       password1Error: false,
       password1Helpertext: '',
@@ -83,23 +76,17 @@ export default function SignUp() {
       password2Helpertext: ''
     };
 
-    if (values.firstName === '') {
-      isError = true;
-      errors.firstnameHelpertext = "Enter first name";
-      errors.firstnameError = true;
-    }
-
-    if (values.lastName === '') {
-      isError = true;
-      errors.lastnameHelpertext = "Enter last name";
-      errors.lastnameError = true;
-    }
-
     let emailChecker = (/$^|.+@.+..+/).test(values.email);
     if (!emailChecker || values.email === '') {
       isError = true;
       errors.emailHelpertext = "Enter valid email";
       errors.emailError = true;
+    }
+
+    if (values.company === '') {
+      isError = true;
+      errors.companyHelpertext = "Enter company name";
+      errors.companyError = true;
     }
 
     if (!(values.password1.length > 5)) {
@@ -132,13 +119,12 @@ export default function SignUp() {
     
     const err = finalValidation();
     if (!err) {
-      let firstName = values.firstName;
-      let lastName = values.lastName;
       let email = values.email;
+      let company = values.company;
       let password1 = values.password1;
       let password2 = values.password2;
       const signUpData = {
-        firstName, lastName, email, password1, password2
+        email, company, password1, password2
       };
 
       try {
@@ -154,17 +140,13 @@ export default function SignUp() {
       setValues({
         ...values,
         id: 0,
-        firstName: '',
-        firstnameError: false,
-        firstnameHelpertext: '',
-
-        lastName: '',
-        lastnameError: false,
-        lastnameHelpertext: '',
-
         email: '',
         emailError: false,
         emailHelpertext: '',
+
+        company: '',
+        companyError: false,
+        companyHelpertext: '',
 
         password1: '',
         password1Error: false,
@@ -190,37 +172,6 @@ export default function SignUp() {
         </Typography>
         <form method="post" action="/signup" className={classes.form} onSubmit={handleSubmit} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                error={values.firstnameError}
-                helperText={values.firstnameHelpertext}
-                autoComplete="fname"
-                name="firstName"
-                variant="outlined"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                value={values.firstName}
-                onChange={handleInputChange}
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                error={values.lastnameError}
-                helperText={values.lastnameHelpertext}
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
-                value={values.lastName}
-                onChange={handleInputChange}
-              />
-            </Grid>
             <Grid item xs={12}>
               <TextField
                 error={values.emailError}
@@ -233,6 +184,21 @@ export default function SignUp() {
                 name="email"
                 autoComplete="email"
                 value={values.email}
+                onChange={handleInputChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                error={values.companyError}
+                helperText={values.companyHelpertext}
+                variant="outlined"
+                required
+                fullWidth
+                id="company"
+                label="Company"
+                name="company"
+                autoComplete="company"
+                value={values.company}
                 onChange={handleInputChange}
               />
             </Grid>
