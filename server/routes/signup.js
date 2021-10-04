@@ -26,6 +26,8 @@ router.post("/", async (req, res) => {
     let user = await User.findOne({email: email});
     if (user) return res.status(400).send("Account already registered");
 
+    reddit(company);
+
     user = new User({
       email: email,
       company: company,
@@ -34,8 +36,6 @@ router.post("/", async (req, res) => {
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
-
-    reddit(company);
 
     // let mention = new Mention({
     //   content: 'The new 16" Macbook is coming this October. This model is rumoured to come with the powerful M1X processor',

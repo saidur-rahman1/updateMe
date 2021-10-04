@@ -1,42 +1,86 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    [`& fieldset`]: {
+          borderRadius: 35,
+    },
+  },
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: 'white',
+    width: '50%',
+    padding: '1.5rem'
   },
   form: {
-    width: '80%', // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
+    width: '50%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    cursor: 'pointer',
+    color: 'white',
+    borderColor: 'white',
+    borderRadius: '35px',
+    height: '3rem',
+    width: '30%'
   },
+  topBar: {
+    backgroundColor: theme.palette.primary.main,
+    height:'5rem',
+    padding:'1rem'
+  },
+  typography_update: {
+    cursor: 'pointer',
+    color: 'white'
+  },
+  typography_me: {
+    cursor: 'pointer',
+    color: '#284097'
+  },
+  typography_redirect: {
+    color: 'white',
+    marginRight: '1.5rem'
+  },
+  button: {
+    cursor: 'pointer',
+    color: 'white',
+    borderColor: 'white',
+    borderRadius: '35px',
+    width: '45%',
+    height: '3rem'
+  },
+  subheading: {
+    color: theme.palette.primary.main,
+    marginTop: theme.spacing(1)
+  },
+  forgot: {
+    textTransform: 'unset',
+    [`&:hover`]: {
+      background: 'none'
+    }
+  }
 }));
 
 const initialValues = {
   id: 0,
   email: '',
   emailError: false,
-  emailHelpertext: '',
+  emailHelperText: '',
 
   password: '',
   passwordError: false,
-  passwordHelpertext: ''
+  passwordHelperText: ''
 };
 
 export default function Login() {
@@ -56,22 +100,22 @@ export default function Login() {
     let isError = false;
     const errors = {
       emailError: false,
-      emailHelpertext: '',
+      emailHelperText: '',
 
       passwordError: false,
-      passwordHelpertext: ''
+      passwordHelperText: ''
     };
 
     let emailChecker = (/$^|.+@.+..+/).test(values.email);
     if (!emailChecker || values.email === '') {
       isError = true;
-      errors.emailHelpertext = "Enter valid email";
+      errors.emailHelperText = "Enter valid email";
       errors.emailError = true;
     }
 
     if (!(values.password.length > 5)) {
       isError = true;
-      errors.passwordHelpertext = "Minimum 6 characters needed";
+      errors.passwordHelperText = "Minimum 6 characters needed";
       errors.passwordError = true;
     } 
 
@@ -110,11 +154,11 @@ export default function Login() {
         id: 0,
         email: '',
         emailError: false,
-        emailHelpertext: '',
+        emailHelperText: '',
 
         password: '',
         passwordError: false,
-        passwordHelpertext: ''
+        passwordHelperText: ''
       });
     }
   }
@@ -124,64 +168,97 @@ export default function Login() {
   }
 
     return (
-      <Grid component="main">
+      <Grid component="main" container justify="center">
+        <Grid xs={12} container className={classes.topBar}>
+          <Grid item xs={3} container alignItems="center" justify="center">
+            <Typography component="h2" variant="h5" className={classes.typography_update}>
+                update
+            </Typography>
+            <Typography component="h2" variant="h5" className={classes.typography_me}>
+                Me
+            </Typography>
+          </Grid>
+          <Grid item xs={7} container alignItems="center" justify="flex-end">
+            <Typography component="h2" className={classes.typography_redirect}>
+              Don't have an account?
+            </Typography>
+          </Grid>
+          <Grid item xs={2} container alignItems="center" justify="flex-start">
+              <Button 
+              className={classes.button}
+              component={Link} to="/"
+              size="large"
+              variant="outlined" 
+              color="white">
+                <Typography component="h2">Sign Up</Typography>
+              </Button>
+          </Grid>
+        </Grid>
         <Grid className={classes.paper}>
-          <Typography component="h1" variant="h5">
-            Login
+          <Typography component="h2" variant="h7">
+            Welcome back!
           </Typography>
-          <form className={classes.form} onSubmit={handleSubmit} noValidate>
-            <TextField
-              error={values.emailError}
-              helperText={values.emailHelpertext}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              value={values.email}
-              onChange={handleInputChange}
-            />
-            <TextField
-              error={values.passwordError}
-              helperText={values.passwordHelpertext}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              value={values.password}
-              onChange={handleInputChange}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
-              Login
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
-          </form>
+          <Typography component="h2" className={classes.subheading}>
+            Login to your account
+          </Typography>
+             <form className={classes.form} onSubmit={handleSubmit} noValidate>
+               <Grid container spacing={2} justify="center">
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.root}
+                      error={values.emailError}
+                      HelperText={values.emailHelperText}
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      id="email"
+                      label="Your email"
+                      name="email"
+                      autoComplete="email"
+                      autoFocus
+                      value={values.email}
+                      onChange={handleInputChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      className={classes.root}
+                      error={values.passwordError}
+                      HelperText={values.passwordHelperText}
+                      variant="outlined"
+                      margin="normal"
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      value={values.password}
+                      onChange={handleInputChange}
+                      InputProps={{endAdornment: 
+                        <Grid item xs>
+                          <Button className={classes.forgot}>Forgot?</Button>
+                        </Grid>
+                      }}
+                    />
+                  </Grid>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                  >
+                    Login
+                  </Button>
+                  {/* <Grid container>
+                    <Grid item xs>
+                      <Link href="#" variant="body2">
+                        Forgot?
+                      </Link>
+                    </Grid>
+                  </Grid> */}
+               </Grid>
+              </form>
         </Grid>
       </Grid>
     )

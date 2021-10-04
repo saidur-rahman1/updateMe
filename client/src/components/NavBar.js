@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
   topBar: {
     backgroundColor: theme.palette.primary.main,
     height:'5rem',
-    padding:'1.5rem'
+    padding:'1rem'
   },
   typography_update: {
     cursor: 'pointer',
@@ -31,7 +31,7 @@ export default function NavBar() {
   return (
 
         <Grid xs={12} container className={classes.topBar}>
-          <Grid item xs={3} container alignItems="center" justify="flex-start">
+          <Grid item xs={3} container alignItems="center" justify="center">
             <Typography component="h2" variant="h5" className={classes.typography_update}>
                 update
             </Typography>
