@@ -37,7 +37,7 @@ export default function Dashboard() {
       <NavBar />
       <Grid container>
         <SideBar />
-        <Grid xs={9} container>
+        <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
             My mentions
             {mentions.map((mention) => (
