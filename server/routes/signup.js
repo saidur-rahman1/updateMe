@@ -26,7 +26,7 @@ router.post("/", async (req, res) => {
     let user = await User.findOne({email: email});
     if (user) return res.status(400).send("Account already registered");
 
-    reddit(company);
+    await reddit(company);
 
     user = new User({
       email: email,
