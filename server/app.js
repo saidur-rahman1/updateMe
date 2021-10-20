@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require('mongoose');
 const cors = require('cors');
-
+const redis = require('redis');
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
@@ -54,8 +54,15 @@ app.use(function(err, req, res, next) {
   res.json({ error: err });
 });
 
+// Connect to MongoDB
 mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
 .then(() => console.log("Connected to MongoDB"))
 .catch(error => console.error("Could not connect to MongoDB", error));
+
+// Create Redis client
+let redisClient = redis.createClient();
+redisClient.on('connect', function(){
+  console.log("Connected to Redis");
+});
 
 module.exports = app;
