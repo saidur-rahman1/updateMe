@@ -1,17 +1,22 @@
 const Queue = require('bull');
 const reddit = require('./routes/reddit');
+const User = require("./models/user");
 
-const mentionsQueue = new Queue('Mentions Queue');
 
-mentionsQueue.process(async (job, done) => {
-    await reddit(job.data.company);
-    done();
-});
+function redditQueue() {
 
-function redditQueue (company) {
+    const mentionsQueue = new Queue('Mentions Queue');
 
-    mentionsQueue.add({ company }, { repeat: { cron: '*/1 * * * *' } });
+    mentionsQueue.process(async (job, done) => {
+        let companies = await User.distinct("company");
+        for (let i=0 ; i<companies.length ; i++) {
+            await reddit(companies[i]);
+        }
+        done();
+    });
 
+    mentionsQueue.add({}, { repeat: { cron: '*/5 * * * *' } });
+    
 }
 
 module.exports = { redditQueue };
