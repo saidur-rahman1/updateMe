@@ -1,24 +1,23 @@
-// const Queue = require('bull');
-// const User = require("./models/user");
+const Queue = require('bull');
+const User = require("./models/user");
+const { mentionsQueue } = require('./mentionsQueue');
 
-// function companyQueue () {
+const cQueue = new Queue('Company Queue');
 
-//     const companyQueue = new Queue('Company Queue');
-//     var companies = '';
+cQueue.process(async (job, done) => {
+    try {
+        const companies = await User.distinct("company");
+        companies.forEach(company => mentionsQueue(company));
+        done();    
+    } catch(err) {
+        console.error(err);
+    }
+});
 
-//     companyQueue.process(async (job, done) => {
-//         companies = await User.distinct("company");
-//         return companies;
-//         //done();
-//     });
+function companyQueue () {
 
-//     companyQueue.add({}, { repeat: { cron: '*/5 * * * *' } });
+    cQueue.add({}, { repeat: { cron: '45 2 * * *' } });
 
-// }
+}
 
-// module.exports = { companyQueue };
-
-// module.exports = async function (job) {
-// let companies = await User.distinct("company");
-//     return companies;
-// }
+module.exports = { companyQueue };
