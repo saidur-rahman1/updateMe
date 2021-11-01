@@ -5,15 +5,12 @@ const mQueue = new Queue('Mentions Queue');
 
 mQueue.process(async (job, done) => {
     await reddit(job.data.company);
-    console.log(job.data.company);
     done();
 });
 
 
 function mentionsQueue(company) {
-
     mQueue.add({company});
-    
 }
 
 module.exports = { mentionsQueue };

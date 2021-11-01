@@ -16,7 +16,8 @@ cQueue.process(async (job, done) => {
 
 function companyQueue () {
 
-    cQueue.add({}, { repeat: { cron: '45 2 * * *' } });
+    const DAILY_AT_8_45_AM = '45 8 * * *';
+    cQueue.add({}, { repeat: { cron: DAILY_AT_8_45_AM } });
 
 }
 
