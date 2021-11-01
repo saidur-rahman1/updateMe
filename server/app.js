@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const mongoose = require('mongoose');
 const cors = require('cors');
-const { redditQueue } = require('./mentionsQueue');
+const { companyQueue } = require ('./companyQueue');
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
@@ -60,6 +60,6 @@ mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
 .catch(error => console.error("Could not connect to MongoDB", error));
 
 // Run the cron job
-redditQueue('Microsoft');
+companyQueue();
 
 module.exports = app;

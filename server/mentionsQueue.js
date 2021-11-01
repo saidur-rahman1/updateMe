@@ -1,18 +1,17 @@
 const Queue = require('bull');
 const reddit = require('./routes/reddit');
 
-const mentionsQueue = new Queue('Mentions Queue');
+const mQueue = new Queue('Mentions Queue');
 
-mentionsQueue.process(async (job, done) => {
+mQueue.process(async (job, done) => {
     await reddit(job.data.company);
     done();
 });
 
-function redditQueue (company) {
 
-    mentionsQueue.add({ company }, { repeat: { cron: '*/1 * * * *' } });
-
+function mentionsQueue(company) {
+    mQueue.add({company});
 }
 
-module.exports = { redditQueue };
+module.exports = { mentionsQueue };
 
