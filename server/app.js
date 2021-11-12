@@ -6,6 +6,7 @@ const logger = require("morgan");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { companyQueue } = require ('./companyQueue');
+const reddit = require("./routes/reddit");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
