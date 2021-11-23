@@ -65,7 +65,10 @@ const useStyles = makeStyles((theme) => ({
   },
   typography_settings: {
     cursor: 'pointer',
-    color: 'lightgrey'
+    color: 'lightgrey',
+    [`&:hover`]: {
+      background: 'none'
+    }
   }
 }));
 

@@ -6,17 +6,25 @@ import { theme } from "./themes/theme";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Settings from "./pages/Settings";
+import { AuthContextProvider } from "./context/AuthContext";
+import axios from 'axios';
 
 import "./App.css";
+
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
     <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Route path="/" component={SignUp} exact />
-        <Route path="/login" component={Login} />
-        <Route path="/dashboard" component={Dashboard}/>
-      </BrowserRouter>
+      <AuthContextProvider>
+        <BrowserRouter>
+          <Route path="/" component={SignUp} exact />
+          <Route path="/login" component={Login} />
+          <Route path="/dashboard" component={Dashboard}/>
+          <Route path="/settings" component={Settings}/>
+        </BrowserRouter>
+      </AuthContextProvider>
     </MuiThemeProvider>
   );
 }

@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const auth = require("../middlewares/auth");
 
 const User = require("../models/user");
 
@@ -30,9 +29,9 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true
-    });
+    }).status(201).send("Login successful");
 
-    res.status(201).send("Login successful");
+    //res.status(201).send("Login successful");
 
   } catch (error) {
     console.log(error);

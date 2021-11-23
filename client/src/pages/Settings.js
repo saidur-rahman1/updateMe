@@ -1,11 +1,9 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useContext} from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import NavBar from '../components/NavBar';
-import SideBar from '../components/SideBar';
-import Mention from '../components/Mention';
-import axios from 'axios';
+import SideBarSettings from '../components/SideBarSettings';
 import AuthContext from '../context/AuthContext.js';
 import { Redirect } from 'react-router-dom';
 
@@ -23,17 +21,17 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Dashboard() {
+export default function Settings() {
   const classes = useStyles();
   const { loggedIn } = useContext(AuthContext);
 
-  const [mentions, setMentions] = useState([]);
-  useEffect(() => {
-    axios
-    .get("http://localhost:3001/mention/")
-    .then(res => setMentions(res.data))
-    .catch(error => console.log(error));
-  }, []);
+  // const [mentions, setMentions] = useState([]);
+  // useEffect(() => {
+  //   axios
+  //   .get("http://localhost:3001/mention/")
+  //   .then(res => setMentions(res.data))
+  //   .catch(error => console.log(error));
+  // }, []);
 
   if (!loggedIn===true) {
     return <Redirect to={'/login'} />
@@ -43,19 +41,11 @@ export default function Dashboard() {
     <div className={classes.root}>
       <NavBar />
       <Grid container>
-        <SideBar />
+        <SideBarSettings />
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
-            My mentions
-            {mentions.map((mention) => (
-              <Mention 
-                alt={mention.platform} 
-                imgSource={mention.image} 
-                title={mention.title}
-                contentSource={mention.platform}
-                text={mention.content}
-              />
-            ))}
+            Company
+            
           </Paper>
         </Grid>
       </Grid>
