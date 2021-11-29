@@ -59,9 +59,7 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true
-    }).status(201).send(user);
-
-    //res.status(201).send(user);
+    }).sendStatus(201);
 
   } catch (error) {
     console.log(error);

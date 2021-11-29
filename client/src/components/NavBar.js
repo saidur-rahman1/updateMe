@@ -30,9 +30,6 @@ export default function NavBar() {
     }
   }
 
-  // component={Link} to="/dashboard"
-  // component={Link} to="/settings"
-
   if (redirectDashboard) {
     return <Redirect to={redirectDashboard} />
   }

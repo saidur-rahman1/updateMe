@@ -76,7 +76,6 @@ export default function Login() {
 
       try {
         let outcome = await axios.post("http://localhost:3001/login/", loginData);
-        console.log("Login successful");
         if (outcome.status === 201) {
           setRedirect('/dashboard');
         }

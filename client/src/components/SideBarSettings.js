@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -35,32 +35,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SideBarSettings() {
     const classes = useStyles();
-  
-    // const [values, setValues] = useState({
-    //   reddit: false,
-    //   bi: false,
-    //   twitter: false
-    // });
-  
-    // const handleInputChange = e => {
-    //   const { name, checked } = e.target
-    //   setValues({
-    //     ...values,
-    //     [name]:checked
-    //   })
-    // }
-
-    const [redirect, setRedirect] = useState();
+    const history = useHistory();
 
     async function logout() {
       let outcome = await axios.get("http://localhost:3001/logout/");
       if (outcome.status === 201) {
-        setRedirect('/login');
+        history.push('/login');
       }
-    }
-
-    if (redirect) {
-      return <Redirect to={redirect} />
     }
   
     return (
@@ -88,4 +69,4 @@ export default function SideBarSettings() {
             </Paper>
           </Grid>
     );
-  }
+}

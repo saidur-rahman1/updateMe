@@ -108,7 +108,6 @@ export default function SignUp() {
 
       try {
         let outcome = await axios.post("http://localhost:3001/signup/", signUpData);
-        console.log("Registration successful");
         if (outcome.status === 201) {
           setRedirect('/dashboard');
         }

@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings";
 import { AuthContextProvider } from "./context/AuthContext";
 import axios from 'axios';
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
 
