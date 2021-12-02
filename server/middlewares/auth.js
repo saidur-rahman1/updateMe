@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-router.post("/", (req, res) => {
+router.get("/", (req, res) => {
     //try {
         const token = req.cookies.token;
         // if (!token) return res.status(401).json({ errorMessage: "Unauthorized" });
@@ -10,11 +10,10 @@ router.post("/", (req, res) => {
         // req.user = verified.user;
 
         if (!token) { 
-            res.locals.auth = false;
+            return false;
         } else {
             jwt.verify(token, process.env.JWT_SECRET);
-            res.locals.auth = true;
-            next();
+            return true;
         }
     
 

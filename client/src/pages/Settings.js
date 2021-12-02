@@ -33,7 +33,7 @@ export default function Settings() {
   //   .catch(error => console.log(error));
   // }, []);
 
-  if (!loggedIn===true) {
+  if (loggedIn!==true) {
     return <Redirect to={'/login'} />
   }
 

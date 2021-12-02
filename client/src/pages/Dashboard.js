@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const { auth } = useContext(AuthContext);
+  const { loggedIn } = useContext(AuthContext);
 
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
@@ -35,8 +35,8 @@ export default function Dashboard() {
     .catch(error => console.log(error));
   }, []);
 
-  if (!auth===true) {
-    console.log(auth);
+  if (loggedIn!==true) {
+    console.log(loggedIn);
     return <Redirect to={'/login'} />
   }
 
