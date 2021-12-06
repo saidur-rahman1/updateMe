@@ -6,6 +6,7 @@ import NavBar from '../components/NavBar';
 import SideBarSettings from '../components/SideBarSettings';
 import AuthContext from '../context/AuthContext.js';
 import { Redirect } from 'react-router-dom';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Settings() {
   const classes = useStyles();
-  const { loggedIn } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   // const [mentions, setMentions] = useState([]);
   // useEffect(() => {
@@ -33,7 +34,7 @@ export default function Settings() {
   //   .catch(error => console.log(error));
   // }, []);
 
-  if (loggedIn!==true) {
+  if (!user) {
     return <Redirect to={'/login'} />
   }
 
@@ -45,7 +46,9 @@ export default function Settings() {
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
             Company
-            
+            <Typography>
+              Welcome {user.email}
+            </Typography>
           </Paper>
         </Grid>
       </Grid>

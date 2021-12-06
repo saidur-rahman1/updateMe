@@ -9,13 +9,13 @@ import AuthContext from '../context/AuthContext.js';
 
 export default function NavBar() {
   const classes = useStyles();
-  const { loggedIn } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const [redirectDashboard, setRedirectDashboard] = useState();
   const [redirectSettings, setRedirectSettings] = useState();
 
   function toDashboard() {
-    if (loggedIn===true) {
+    if (user) {
       setRedirectDashboard('/dashboard');
     } else {
       setRedirectDashboard('/login');
@@ -23,7 +23,7 @@ export default function NavBar() {
   }
 
   function toSettings() {
-    if (loggedIn===true) {
+    if (user) {
       setRedirectSettings('/settings');
     } else {
       setRedirectSettings('/login');

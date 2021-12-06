@@ -20,6 +20,8 @@ router.post("/", async (req, res) => {
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) return res.status(401).send("Invalid credentials/User not found");
 
+    const company = user.company;
+
     const token = jwt.sign(
       {
         user: user._id
@@ -29,10 +31,11 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true
-    }).sendStatus(201);
+    }).status(201).json({email, company, token});
 
   } catch (error) {
     console.log(error);
+    res.status(500).json(error);
   }
   
 });

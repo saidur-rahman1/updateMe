@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,6 +6,7 @@ import { Paper } from '@material-ui/core';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import AuthContext from '../context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -36,10 +37,12 @@ const useStyles = makeStyles((theme) => ({
 export default function SideBarSettings() {
     const classes = useStyles();
     const history = useHistory();
+    const {user, dispatch} = useContext(AuthContext);
 
     async function logout() {
       let outcome = await axios.get("http://localhost:3001/logout/");
       if (outcome.status === 201) {
+        dispatch({ type: "LOGIN_START" });
         history.push('/login');
       }
     }

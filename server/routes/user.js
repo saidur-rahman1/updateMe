@@ -8,7 +8,7 @@ const User = require("../models/user");
 userRouter.post("/", async (req, res) => {
 
     try {
-        const loggedIn;
+        let loggedIn = null;
         const token = req.cookies.token;
         if (token) {
             loggedIn = true;

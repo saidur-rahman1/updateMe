@@ -59,10 +59,11 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true
-    }).sendStatus(201);
+    }).status(201).json({email, company, token});
 
   } catch (error) {
     console.log(error);
+    res.status(500).json(error);
   }
     
 });

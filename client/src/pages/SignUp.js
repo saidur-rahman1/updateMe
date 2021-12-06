@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../styles.js';
 import axios from 'axios';
+import AuthContext from '../context/AuthContext';
 
 const initialValues = {
   id: 0,
@@ -30,6 +31,7 @@ export default function SignUp() {
   const classes = useStyles();
 
   const [values, setValues] = useState(initialValues);
+  const {user, dispatch} = useContext(AuthContext);
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -106,13 +108,16 @@ export default function SignUp() {
         email, company, password1, password2
       };
 
+      dispatch({ type: "LOGIN_START" });
       try {
         let outcome = await axios.post("http://localhost:3001/signup/", signUpData);
         if (outcome.status === 201) {
+          dispatch({ type: "LOGIN_SUCCESS", payload: outcome.data });
           setRedirect('/dashboard');
         }
       } catch (err) {
         console.log(err);
+        dispatch({ type: "LOGIN_FAILURE", payload: err });
       }
 
       setValues({
@@ -140,6 +145,10 @@ export default function SignUp() {
 
   if (redirect) {
     return <Redirect to={redirect} />
+  }
+
+  if (user) {
+    return <Redirect to={'/dashboard'} />
   }
 
   return (
