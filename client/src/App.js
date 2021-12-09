@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { MuiThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Route } from "react-router-dom";
 
@@ -22,8 +22,8 @@ function App() {
         <BrowserRouter>
           <Route path="/" component={SignUp} exact />
           <Route path="/login" component={Login} />
-          <Route path="/dashboard" component={Dashboard}/>
-          <Route path="/settings" component={Settings}/>
+          <ProtectedRoute path="/dashboard" component={Dashboard}/>
+          <ProtectedRoute path="/settings" component={Settings}/>
         </BrowserRouter>
       </AuthContextProvider>
     </MuiThemeProvider>

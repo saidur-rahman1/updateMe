@@ -5,27 +5,16 @@ const auth = require("../middlewares/auth");
 
 const User = require("../models/user");
 
-userRouter.post("/", async (req, res) => {
+userRouter.get("/", async (req, res) => {
 
     try {
-        let loggedIn = null;
-        const token = req.cookies.token;
-        if (token) {
-            loggedIn = true;
-        } else {
-            loggedIn = false;
-        }
-        const { email } = req.body;
-        const user = await User.findOne({email: email});
+        const { token } = req.cookies;
+        const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
+        const user = await User.findOne({_id: decodedToken.user});
+
         if (!user) return res.status(401).send("Invalid credentials/User not found");
-        // const token = req.cookies.token;
-        const company = user.company;
-        // if (!token) return res.json(false);
-        // jwt.verify(token, process.env.JWT_SECRET);
-        // res.send(true);
-        // // console.log(res.locals.loggedIn);
-        console.log("loggedIN: " + loggedIn);
-        res.json({email, company, loggedIn});
+        const { email, company } = user;
+        res.json({email, company});
     } catch (error) {
         console.error(error);
         res.json(false);

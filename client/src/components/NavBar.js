@@ -1,64 +1,37 @@
-import React, { useContext, useState } from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../styles.js';
 import SettingsIcon from '@material-ui/icons/Settings';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import AuthContext from '../context/AuthContext.js';
 
 export default function NavBar() {
   const classes = useStyles();
-  const { user } = useContext(AuthContext);
-
-  const [redirectDashboard, setRedirectDashboard] = useState();
-  const [redirectSettings, setRedirectSettings] = useState();
-
-  function toDashboard() {
-    if (user) {
-      setRedirectDashboard('/dashboard');
-    } else {
-      setRedirectDashboard('/login');
-    }
-  }
-
-  function toSettings() {
-    if (user) {
-      setRedirectSettings('/settings');
-    } else {
-      setRedirectSettings('/login');
-    }
-  }
-
-  if (redirectDashboard) {
-    return <Redirect to={redirectDashboard} />
-  }
-
-  if (redirectSettings) {
-    return <Redirect to={redirectSettings} />
-  }
 
   return (
-
         <Grid item xs={12} container className={classes.topBar}>
           <Grid item xs={3} container alignItems="center" justify="center">
-            <Grid item container alignItems="center" justify="center" onClick={toDashboard} style={{ textDecoration: 'none' }}>
-              <Typography component="h2" variant="h5" className={classes.typography_update}>
-                  update
-              </Typography>
-              <Typography component="h2" variant="h5" className={classes.typography_me}>
-                  Me
-              </Typography>
-            </Grid>
+            <Link to="/dashboard" style={{ textDecoration: "none" }}>
+              <Grid item container alignItems="center" justify="center" style={{ textDecoration: 'none' }}>
+                  <Typography component="h2" variant="h5" className={classes.typography_update}>
+                      update
+                  </Typography>
+                  <Typography component="h2" variant="h5" className={classes.typography_me}>
+                      Me
+                  </Typography>
+              </Grid>
+            </Link>
           </Grid>
           <Grid item xs={7} />
           <Grid item xs={2} container alignItems="center" justify="flex-end">
             <Typography component="h2" variant="h5">
+              <Link to="/settings" style={{ textDecoration: "none" }}>
                 <Button className={classes.typography_settings}
-                  onClick={toSettings}
                   startIcon={<SettingsIcon />}
                 >
                 </Button>
+              </Link>
             </Typography>
           </Grid>
         </Grid>

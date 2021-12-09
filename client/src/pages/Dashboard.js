@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
@@ -6,8 +6,6 @@ import NavBar from '../components/NavBar';
 import SideBar from '../components/SideBar';
 import Mention from '../components/Mention';
 import axios from 'axios';
-import AuthContext from '../context/AuthContext.js';
-import { Redirect } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const { user } = useContext(AuthContext);
 
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
@@ -34,14 +31,6 @@ export default function Dashboard() {
     .then(res => setMentions(res.data))
     .catch(error => console.log(error));
   }, []);
-
-  // if (loggedIn!==true) {
-  //   console.log(loggedIn);
-  //   return <Redirect to={'/login'} />
-  // }
-  if (!user) {
-    return <Redirect to={'/login'} />
-  }
 
   return (
     <div className={classes.root}>

@@ -5,7 +5,6 @@ import { Paper } from '@material-ui/core';
 import NavBar from '../components/NavBar';
 import SideBarSettings from '../components/SideBarSettings';
 import AuthContext from '../context/AuthContext.js';
-import { Redirect } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,10 +32,6 @@ export default function Settings() {
   //   .then(res => setMentions(res.data))
   //   .catch(error => console.log(error));
   // }, []);
-
-  if (!user) {
-    return <Redirect to={'/login'} />
-  }
 
   return (
     <div className={classes.root}>

@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 export default function SideBarSettings() {
     const classes = useStyles();
     const history = useHistory();
-    const {user, dispatch} = useContext(AuthContext);
+    const {dispatch} = useContext(AuthContext);
 
     async function logout() {
       let outcome = await axios.get("http://localhost:3001/logout/");
