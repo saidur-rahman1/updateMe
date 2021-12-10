@@ -16,7 +16,7 @@ function AuthContextProvider(props) {
   useEffect(() => {
     const getUser = async () => {
       const { data } = await axios.get("http://localhost:3001/user");
-      dispatch({ type: 'LOGIN_SUCCESS', payload: data })
+      if (data) dispatch({ type: 'LOGIN_SUCCESS', payload: data })
     }
     getUser();
   }, []);
