@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const auth = require("../middlewares/auth");
 
 const User = require("../models/user");
 
@@ -21,6 +20,8 @@ router.post("/", async (req, res) => {
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) return res.status(401).send("Invalid credentials/User not found");
 
+    const company = user.company;
+
     const token = jwt.sign(
       {
         user: user._id
@@ -30,12 +31,11 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true
-    });
-
-    res.status(201).send("Login successful");
+    }).status(201).json({email, company, token});
 
   } catch (error) {
     console.log(error);
+    res.status(500).json(error);
   }
   
 });

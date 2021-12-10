@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 const { Mention, getMentions } = require("../models/mention");
 const reddit = require("../routes/reddit");
+const twitter = require("../routes/twitter");
 
 router.post("/", async (req, res) => {
 
@@ -27,6 +29,7 @@ router.post("/", async (req, res) => {
     if (user) return res.status(400).send("Account already registered");
 
     await reddit(company);
+    await twitter(company);
 
     user = new User({
       email: email,
@@ -47,10 +50,20 @@ router.post("/", async (req, res) => {
     // });
     // await mention.save();
 
-    res.status(201).send(user);
+    const token = jwt.sign(
+      {
+        user: user._id
+      },
+      process.env.JWT_SECRET
+    );
+
+    res.cookie("token", token, {
+      httpOnly: true
+    }).status(201).json({email, company, token});
 
   } catch (error) {
     console.log(error);
+    res.status(500).json(error);
   }
     
 });

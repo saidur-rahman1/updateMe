@@ -13,13 +13,16 @@ const pingRouter = require("./routes/ping");
 const signupRouter = require("./routes/signup");
 const loginRouter = require("./routes/login");
 const mentionRouter = require("./routes/mention");
+const logoutRouter = require("./routes/logout");
+const userRouter = require("./routes/user");
+const authRouter = require("./middlewares/auth");
 
 const { json, urlencoded } = express;
 
 var app = express();
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
   next();
 });
 
@@ -29,7 +32,8 @@ app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 app.use(cors({
-  origin: ["http://localhost:3001/"]
+  origin: ["http://localhost:3000/"],
+  credentials: true
 }));
 
 app.use("/", indexRouter);
@@ -37,6 +41,9 @@ app.use("/ping", pingRouter);
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/mention", mentionRouter);
+app.use("/logout", logoutRouter);
+app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 
 // catch 404 and forward to error handler
