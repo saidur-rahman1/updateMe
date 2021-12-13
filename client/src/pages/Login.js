@@ -22,14 +22,10 @@ const initialValues = {
 export default function Login(props) {
   const classes = useStyles();
 
-  const { history, location: { state } } = props;
-
-  // const { state = {} } = props.location;
-  // const { history } = props;
-  //const { from } = state;
+  const { location: { state } } = props;
 
   const [values, setValues] = useState(initialValues);
-  const {user, dispatch} = useContext(AuthContext);
+  const {dispatch} = useContext(AuthContext);
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -88,14 +84,7 @@ export default function Login(props) {
         let outcome = await axios.post("http://localhost:3001/login/", loginData);
         if (outcome.status === 201) {
           dispatch({ type: "LOGIN_SUCCESS", payload: outcome.data });
-          if (state && state.from) {
-            console.log('state: ' + state);
-            console.log('state.form: ' + state.from);
-            history.push(state.from);
-          } else {
-            setRedirect('/dashboard');
-          }
-          
+          setRedirect(state?.from ?? '/dashboard');
         }
       } catch (err) {
         console.log(err);
@@ -118,10 +107,6 @@ export default function Login(props) {
 
   if (redirect) {
     return <Redirect to={redirect} />
-  } 
-  
-  if (user) {
-    return <Redirect to={'/dashboard'} />
   }
 
     return (
