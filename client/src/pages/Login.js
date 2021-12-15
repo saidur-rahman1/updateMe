@@ -19,11 +19,13 @@ const initialValues = {
   passwordHelperText: ''
 };
 
-export default function Login() {
+export default function Login(props) {
   const classes = useStyles();
 
+  const { location: { state } } = props;
+
   const [values, setValues] = useState(initialValues);
-  const {user, dispatch} = useContext(AuthContext);
+  const {dispatch} = useContext(AuthContext);
 
   const handleInputChange = e => {
     const { name, value } = e.target
@@ -67,6 +69,7 @@ export default function Login() {
   const [redirect, setRedirect] = useState();
 
   async function handleSubmit (e) {
+
     e.preventDefault()
     const err = finalValidation();
     if (!err) {
@@ -81,7 +84,7 @@ export default function Login() {
         let outcome = await axios.post("http://localhost:3001/login/", loginData);
         if (outcome.status === 201) {
           dispatch({ type: "LOGIN_SUCCESS", payload: outcome.data });
-          setRedirect('/dashboard');
+          setRedirect(state?.from ?? '/dashboard');
         }
       } catch (err) {
         console.log(err);
@@ -104,10 +107,6 @@ export default function Login() {
 
   if (redirect) {
     return <Redirect to={redirect} />
-  }
-
-  if (user) {
-    return <Redirect to={'/dashboard'} />
   }
 
     return (
