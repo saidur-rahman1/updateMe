@@ -23,6 +23,10 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
     popularity: {
         type: String,
         required: true
+    },
+    url: {
+        type: String,
+        required: true
     }
 }));
 

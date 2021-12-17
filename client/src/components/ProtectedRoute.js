@@ -3,16 +3,19 @@ import AuthContext from '../context/AuthContext.js';
 import { Redirect, Route } from 'react-router-dom';
 
 const ProtectedRoute = (props) => {
-    const { user } = useContext(AuthContext);
+    const { user, isFetching } = useContext(AuthContext);
     
-    if (user) {
-        return <Route path={props.path} component={props.component} />
-    } else {
-        return <Redirect to={{
-            pathname: "/login",
-            state: { from: props.path }
-        }} />
-    }
+        if (user && !isFetching) {
+            return <Route path={props.path} component={props.component} />
+        } else if (!user && !isFetching) {
+                return <Redirect to={{
+                    pathname: "/login",
+                    state: { from: props.path }
+                }} />
+        } else {
+            return <div>Loading...</div>
+        }
+    
 }
 
 export default ProtectedRoute;

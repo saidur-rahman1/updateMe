@@ -5,6 +5,7 @@ import { Paper } from '@material-ui/core';
 import NavBar from '../components/NavBar';
 import SideBar from '../components/SideBar';
 import Mention from '../components/Mention';
+import CustomizedDialog from '../components/Dialog';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -41,13 +42,14 @@ export default function Dashboard() {
           <Paper className={classes.paper} component="h2">
             My mentions
             {mentions.map((mention) => (
-              <Mention 
-                alt={mention.platform} 
-                imgSource={mention.image} 
-                title={mention.title}
-                contentSource={mention.platform}
-                text={mention.content}
-              />
+                <CustomizedDialog
+                  alt={mention.platform} 
+                  imgSource={mention.image} 
+                  title={mention.title}
+                  contentSource={mention.platform}
+                  text={mention.content}
+                  url={mention.url}
+                />
             ))}
           </Paper>
         </Grid>

@@ -17,7 +17,8 @@ async function reddit(searchTerm) {
                 platform: 'Reddit',
                 image: elementImage,
                 date: new Date(),
-                popularity: element.ups
+                popularity: element.ups,
+                url: element.url
             });
             mention.save();
         });
