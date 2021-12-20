@@ -9,11 +9,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
-import Mention from './Mention';
 import Grid from '@material-ui/core/Grid';
 import { useStyles } from '../styles.js';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import { Link } from 'react-router-dom';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -53,8 +51,7 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialog(props) {
-  const classes = useStyles();
+export default function CustomizedDialogs(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -66,44 +63,36 @@ export default function CustomizedDialog(props) {
 
   return (
     <Grid container>
-      <Grid container item onClick={handleClickOpen}>
-        <Mention
-            alt={props.alt} 
-            imgSource={props.imgSource} 
-            title={props.title}
-            contentSource={props.contentSource}
-            text={props.text}
-         />
-      </Grid>
+      {/* <Button variant="outlined" onClick={handleClickOpen}>
+        Open dialog
+      </Button> */}
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
       >
-        <BootstrapDialogTitle className={classes.visitPage} id="customized-dialog-title" onClose={handleClose}>
-          {props.title}
+        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+          Modal title
         </BootstrapDialogTitle>
         <DialogContent dividers>
-            <Grid container spacing={2}>
-                <Grid item>
-                    <ButtonBase className={classes.image}>
-                        <img className={classes.img} alt={props.alt} src={props.imgSource} />
-                    </ButtonBase>
-                </Grid>
-                <Grid item xs={12} sm container>
-                    <Grid item xs container direction="column" spacing={2}>
-                        <Grid item xs>
-                            <Typography variant="body2" color="textSecondary">
-                                {props.text}
-                            </Typography>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid>
+          <Typography gutterBottom>
+            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+            consectetur ac, vestibulum at eros.
+          </Typography>
+          <Typography gutterBottom>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+          </Typography>
+          <Typography gutterBottom>
+            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+            magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+            ullamcorper nulla non metus auctor fringilla.
+          </Typography>
         </DialogContent>
         <DialogActions>
-          <Button className={classes.visitPage} href={props.url} autoFocus target="_blank" onClick={handleClose}>
-            Visit page
+          <Button autoFocus onClick={handleClose}>
+            Save changes
           </Button>
         </DialogActions>
       </BootstrapDialog>

@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import Dialog from './Dialog';
+import CustomizedDialog from './Dialog';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Mention(props) {
   const classes = useStyles();
+
+  const [open, setOpen] = useState(false);
 
   let title = props.title;
   let n = title.lastIndexOf(" ");

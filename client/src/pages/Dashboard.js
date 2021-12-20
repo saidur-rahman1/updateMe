@@ -25,6 +25,14 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   const classes = useStyles();
 
+  const [dAlt, setdAlt] = useState();
+  const [dImgSource, setdImgSource] = useState();
+  const [dTitle, setdTitle] = useState();
+  const [dContentSource, setdContentSource] = useState();
+  const [dText, setdText] = useState();
+  const [dUrl, setdUrl] = useState();
+  const [open, setOpen] = useState(false);
+
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
     axios
@@ -32,6 +40,20 @@ export default function Dashboard() {
     .then(res => setMentions(res.data))
     .catch(error => console.log(error));
   }, []);
+
+  const handleClick = () => {
+      setOpen(true);
+  }
+
+  const handleClose = () => {
+    setdAlt('');
+    setdImgSource('');
+    setdTitle('');
+    setdContentSource('');
+    setdText('');
+    setdUrl('');
+    setOpen(false);
+  }
 
   return (
     <div className={classes.root}>
@@ -41,14 +63,16 @@ export default function Dashboard() {
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
             My mentions
+            <CustomizedDialog setOpen={open} />
             {mentions.map((mention) => (
-                <CustomizedDialog
+                <Mention
                   alt={mention.platform} 
                   imgSource={mention.image} 
                   title={mention.title}
                   contentSource={mention.platform}
                   text={mention.content}
                   url={mention.url}
+                  onClick={() => {setOpen(true)}}
                 />
             ))}
           </Paper>
