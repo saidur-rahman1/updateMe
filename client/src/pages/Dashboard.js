@@ -7,6 +7,7 @@ import SideBar from '../components/SideBar';
 import Mention from '../components/Mention';
 import CustomizedDialog from '../components/Dialog';
 import axios from 'axios';
+import { Link, useLocation } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,14 +25,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
+  const location = useLocation();
 
-  const [dAlt, setdAlt] = useState();
-  const [dImgSource, setdImgSource] = useState();
-  const [dTitle, setdTitle] = useState();
-  const [dContentSource, setdContentSource] = useState();
-  const [dText, setdText] = useState();
-  const [dUrl, setdUrl] = useState();
   const [open, setOpen] = useState(false);
+  const [mention, setMention] = useState(null);
 
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
@@ -41,18 +38,9 @@ export default function Dashboard() {
     .catch(error => console.log(error));
   }, []);
 
-  const handleClick = () => {
-      setOpen(true);
-  }
-
-  const handleClose = () => {
-    setdAlt('');
-    setdImgSource('');
-    setdTitle('');
-    setdContentSource('');
-    setdText('');
-    setdUrl('');
-    setOpen(false);
+  const handleClick = (mention) => {
+    setMention(mention);
+    setOpen(!open);
   }
 
   return (
@@ -63,17 +51,35 @@ export default function Dashboard() {
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
             My mentions
-            <CustomizedDialog setOpen={open} />
+            <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
             {mentions.map((mention) => (
-                <Mention
-                  alt={mention.platform} 
-                  imgSource={mention.image} 
-                  title={mention.title}
-                  contentSource={mention.platform}
-                  text={mention.content}
-                  url={mention.url}
-                  onClick={() => {setOpen(true)}}
-                />
+                <Grid item onClick={() => { handleClick(mention) }}>
+                  <Mention
+                    alt={mention.platform} 
+                    imgSource={mention.image} 
+                    title={mention.title}
+                    contentSource={mention.platform}
+                    text={mention.content}
+                    url={mention.url}
+                    id={mention._id}
+                  />
+                </Grid>
+                // <Link
+                //   key={mention._id}
+                //   to={{
+                //     pathname: `/mention/${mention._id}`,
+                //     state: { background: location }
+                //   }}
+                // >
+                //   <Mention
+                //     alt={mention.platform} 
+                //     imgSource={mention.image} 
+                //     title={mention.title}
+                //     contentSource={mention.platform}
+                //     text={mention.content}
+                //     url={mention.url}
+                //   />
+                // </Link>
             ))}
           </Paper>
         </Grid>

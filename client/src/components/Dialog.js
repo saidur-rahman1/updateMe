@@ -12,6 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { useStyles } from '../styles.js';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import { useParams } from "react-router-dom";
+import axios from 'axios';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -51,51 +53,75 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomizedDialogs(props) {
-  const [open, setOpen] = React.useState(false);
+const initialValues = {
+  platform: '',
+  image: '',
+  title: '',
+  content: '',
+  url: ''
+};
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+export default function CustomizedDialog({open, close, mention}) {
+  const classes = useStyles();
+  let { id } = useParams();
+
+  const [localMention, setLocalMention] = React.useState(initialValues);
+
+
+  React.useEffect(() => {
+    // if (id) {
+    //   const getOutcome = async () => {
+    //     let outcome = await axios.post("http://localhost:3001/mentionById/", id);
+    //     if (outcome.status === 201) {
+    //       console.log(outcome);
+    //     }
+    //   }
+    //   getOutcome();
+    // } else 
+    if (mention != null)
+        setLocalMention({
+            ...mention
+        })
+  }, [mention])
+
   const handleClose = () => {
-    setOpen(false);
+    close(false);
   };
 
   return (
-    <Grid container>
-      {/* <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
-      </Button> */}
-      <BootstrapDialog
-        onClose={handleClose}
-        aria-labelledby="customized-dialog-title"
-        open={open}
-      >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Modal title
-        </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-            dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
-            consectetur ac, vestibulum at eros.
-          </Typography>
-          <Typography gutterBottom>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-            Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
-          </Typography>
-          <Typography gutterBottom>
-            Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
-            magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
-            ullamcorper nulla non metus auctor fringilla.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
-          </Button>
-        </DialogActions>
-      </BootstrapDialog>
-    </Grid>
+      <Grid container>
+        <BootstrapDialog
+          onClose={handleClose}
+          aria-labelledby="customized-dialog-title"
+          open={open}
+        >
+          <BootstrapDialogTitle className={classes.visitPage} id="customized-dialog-title" onClose={handleClose}>
+            {localMention.title}
+          </BootstrapDialogTitle>
+          <DialogContent dividers>
+              <Grid container spacing={2}>
+                  <Grid item>
+                      <ButtonBase className={classes.image}>
+                          <img className={classes.img} alt={localMention.platform} src={localMention.image} />
+                      </ButtonBase>
+                  </Grid>
+                  <Grid item xs={12} sm container>
+                      <Grid item xs container direction="column" spacing={2}>
+                          <Grid item xs>
+                              <Typography variant="body2" color="textSecondary">
+                                  {localMention.content}
+                              </Typography>
+                          </Grid>
+                      </Grid>
+                  </Grid>
+              </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button className={classes.visitPage} href={localMention.url} autoFocus target="_blank" onClick={handleClose}>
+              Visit page
+            </Button>
+          </DialogActions>
+        </BootstrapDialog>
+      </Grid>
   );
 }
