@@ -7,7 +7,7 @@ import SideBar from '../components/SideBar';
 import Mention from '../components/Mention';
 import CustomizedDialog from '../components/Dialog';
 import axios from 'axios';
-import { Link, useLocation } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
-  const location = useLocation();
+  const history = useHistory();
+  const { id } = useParams();
 
   const [open, setOpen] = useState(false);
   const [mention, setMention] = useState(null);
@@ -38,9 +39,25 @@ export default function Dashboard() {
     .catch(error => console.log(error));
   }, []);
 
-  const handleClick = (mention) => {
+  const openMentionDialog = (mention) => {
     setMention(mention);
     setOpen(!open);
+  }
+
+  useEffect(() => {
+    const foundMention = mentions.find(mention => mention._id === id)
+    if (foundMention) {
+      openMentionDialog(foundMention)
+    } else {
+      axios
+        .get(`http://localhost:3001/mention/${id}`)
+        .then(res => openMentionDialog(res.data))
+        .catch(error => console.error(error))
+    }
+  }, [id]);
+  
+  const handleClick = (mention) => {
+    history.push(`/dashboard/${mention._id}`);
   }
 
   return (
@@ -61,25 +78,8 @@ export default function Dashboard() {
                     contentSource={mention.platform}
                     text={mention.content}
                     url={mention.url}
-                    id={mention._id}
                   />
                 </Grid>
-                // <Link
-                //   key={mention._id}
-                //   to={{
-                //     pathname: `/mention/${mention._id}`,
-                //     state: { background: location }
-                //   }}
-                // >
-                //   <Mention
-                //     alt={mention.platform} 
-                //     imgSource={mention.image} 
-                //     title={mention.title}
-                //     contentSource={mention.platform}
-                //     text={mention.content}
-                //     url={mention.url}
-                //   />
-                // </Link>
             ))}
           </Paper>
         </Grid>

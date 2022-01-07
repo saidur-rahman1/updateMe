@@ -12,8 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { useStyles } from '../styles.js';
 import ButtonBase from '@material-ui/core/ButtonBase';
-import { useParams } from "react-router-dom";
-import axios from 'axios';
+import { useHistory } from "react-router-dom";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -63,21 +62,12 @@ const initialValues = {
 
 export default function CustomizedDialog({open, close, mention}) {
   const classes = useStyles();
-  let { id } = useParams();
+  let history = useHistory();
 
   const [localMention, setLocalMention] = React.useState(initialValues);
 
 
   React.useEffect(() => {
-    // if (id) {
-    //   const getOutcome = async () => {
-    //     let outcome = await axios.post("http://localhost:3001/mentionById/", id);
-    //     if (outcome.status === 201) {
-    //       console.log(outcome);
-    //     }
-    //   }
-    //   getOutcome();
-    // } else 
     if (mention != null)
         setLocalMention({
             ...mention
@@ -86,6 +76,7 @@ export default function CustomizedDialog({open, close, mention}) {
 
   const handleClose = () => {
     close(false);
+    history.replace('/dashboard');
   };
 
   return (
@@ -117,7 +108,7 @@ export default function CustomizedDialog({open, close, mention}) {
               </Grid>
           </DialogContent>
           <DialogActions>
-            <Button className={classes.visitPage} href={localMention.url} autoFocus target="_blank" onClick={handleClose}>
+            <Button className={classes.visitPage} href={localMention.url} autoFocus target="_blank">
               Visit page
             </Button>
           </DialogActions>
