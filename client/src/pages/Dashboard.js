@@ -39,22 +39,21 @@ export default function Dashboard() {
     .catch(error => console.log(error));
   }, []);
 
-  const openMentionDialog = (mention) => {
-    setMention(mention);
-    setOpen(!open);
-  }
-
   useEffect(() => {
+    const openMentionDialog = (mention) => {
+      setMention(mention);
+      setOpen(true);
+    }
     const foundMention = mentions.find(mention => mention._id === id)
     if (foundMention) {
       openMentionDialog(foundMention)
-    } else {
+    } else if (id) {
       axios
         .get(`http://localhost:3001/mention/${id}`)
         .then(res => openMentionDialog(res.data))
         .catch(error => console.error(error))
     }
-  }, [id]);
+  }, [id, mentions]);
   
   const handleClick = (mention) => {
     history.push(`/dashboard/${mention._id}`);
