@@ -5,7 +5,9 @@ import { Paper } from '@material-ui/core';
 import NavBar from '../components/NavBar';
 import SideBar from '../components/SideBar';
 import Mention from '../components/Mention';
+import CustomizedDialog from '../components/Dialog';
 import axios from 'axios';
+import { useParams, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +25,11 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Dashboard() {
   const classes = useStyles();
+  const history = useHistory();
+  const { id } = useParams();
+
+  const [open, setOpen] = useState(false);
+  const [mention, setMention] = useState(null);
 
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
@@ -32,6 +39,26 @@ export default function Dashboard() {
     .catch(error => console.log(error));
   }, []);
 
+  useEffect(() => {
+    const openMentionDialog = (mention) => {
+      setMention(mention);
+      setOpen(true);
+    }
+    const foundMention = mentions.find(mention => mention._id === id)
+    if (foundMention) {
+      openMentionDialog(foundMention)
+    } else if (id) {
+      axios
+        .get(`http://localhost:3001/mention/${id}`)
+        .then(res => openMentionDialog(res.data))
+        .catch(error => console.error(error))
+    }
+  }, [id, mentions]);
+  
+  const handleClick = (mention) => {
+    history.push(`/dashboard/${mention._id}`);
+  }
+
   return (
     <div className={classes.root}>
       <NavBar />
@@ -40,14 +67,18 @@ export default function Dashboard() {
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
             My mentions
+            <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
             {mentions.map((mention) => (
-              <Mention 
-                alt={mention.platform} 
-                imgSource={mention.image} 
-                title={mention.title}
-                contentSource={mention.platform}
-                text={mention.content}
-              />
+                <Grid item onClick={() => { handleClick(mention) }}>
+                  <Mention
+                    alt={mention.platform} 
+                    imgSource={mention.image} 
+                    title={mention.title}
+                    contentSource={mention.platform}
+                    text={mention.content}
+                    url={mention.url}
+                  />
+                </Grid>
             ))}
           </Paper>
         </Grid>

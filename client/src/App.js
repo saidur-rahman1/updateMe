@@ -16,6 +16,7 @@ import "./App.css";
 axios.defaults.withCredentials = true;
 
 function App() {
+
   return (
     <MuiThemeProvider theme={theme}>
       <AuthContextProvider>
@@ -23,6 +24,7 @@ function App() {
           <Switch>
             <Route path="/" component={SignUp} exact />
             <Route path="/login" component={Login} />
+            <ProtectedRoute path="/dashboard/:id" component={Dashboard} />
             <ProtectedRoute path="/dashboard" component={Dashboard}/>
             <ProtectedRoute path="/settings" component={Settings}/>
           </Switch>

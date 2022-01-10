@@ -19,4 +19,14 @@ router.get("/", async (req, res) => {
 // .catch(error => res.status(400).res.json(error));
 // });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const mention = await Mention.findOne({_id: id});
+    res.json(mention);
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 module.exports = router;

@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: '95%',
     padding: '1rem',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    cursor: 'pointer'
   },
   image: {
     width: 128,
@@ -38,35 +39,34 @@ export default function Mention(props) {
   let title2 = title.substring(n);
 
   return (
-    <Paper className={classes.paper}>
-        <Grid container spacing={2}>
-            <Grid item>
-                <ButtonBase className={classes.image}>
-                    <img className={classes.img} alt={props.alt} src={props.imgSource} />
-                </ButtonBase>
-            </Grid>
-            <Grid item xs={12} sm container>
-                <Grid item container>
-                    <Typography variant="h6">
-                        {title1}&nbsp;
-                    </Typography>
-                    <Typography variant="h6" color="primary">
-                        {title2}
-                    </Typography>
-                </Grid>
-                <Grid item xs container direction="column" spacing={2}>
-                    <Grid item xs>
-                        <Typography variant="body2" gutterBottom color="textSecondary">
-                            {props.contentSource}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            {props.text}
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid>
-    </Paper>
-
+      <Paper className={classes.paper}>
+          <Grid container spacing={2}>
+              <Grid item>
+                  <ButtonBase className={classes.image}>
+                      <img className={classes.img} alt={props.alt} src={props.imgSource} />
+                  </ButtonBase>
+              </Grid>
+              <Grid item xs={12} sm container>
+                  <Grid item container>
+                      <Typography variant="h6">
+                          {title1}&nbsp;
+                      </Typography>
+                      <Typography variant="h6" color="primary">
+                          {title2}
+                      </Typography>
+                  </Grid>
+                  <Grid item xs container direction="column" spacing={2}>
+                      <Grid item xs>
+                          <Typography variant="body2" gutterBottom color="textSecondary">
+                              {props.contentSource}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                              {props.text}
+                          </Typography>
+                      </Grid>
+                  </Grid>
+              </Grid>
+          </Grid>
+      </Paper>
   );
 }

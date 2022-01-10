@@ -69,6 +69,19 @@ const useStyles = makeStyles((theme) => ({
     [`&:hover`]: {
       background: 'none'
     }
+  },
+  visitPage: {
+    color: theme.palette.primary.main,
+  },
+  image: {
+    width: 128,
+    height: 128,
+  },
+  img: {
+    margin: 'auto',
+    display: 'block',
+    maxWidth: '100%',
+    maxHeight: '100%',
   }
 }));
 

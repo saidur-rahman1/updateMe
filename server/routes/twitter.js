@@ -16,6 +16,7 @@ async function twitter(searchTerm) {
 
         const outcome = await client.get('tweets/search/recent', params);
         const results = outcome.data;
+        console.log(results);
         results.forEach(element => {
             const mention = new Mention({
                 content: element.text,
@@ -23,7 +24,8 @@ async function twitter(searchTerm) {
                 platform: 'Twitter',
                 image: 'https://ommcom.s3.ap-south-1.amazonaws.com/wp-content/uploads/2021/06/16124057/twitter-logo-the-week.jpg',
                 date: new Date(),
-                popularity: element.public_metrics.retweet_count
+                popularity: element.public_metrics.retweet_count,
+                url: `https://twitter.com/i/web/status/${element.id}`
             });
             mention.save();
         });
