@@ -8,6 +8,7 @@ import Mention from '../components/Mention';
 import CustomizedDialog from '../components/Dialog';
 import axios from 'axios';
 import { useParams, useHistory } from "react-router-dom";
+import Toggle from '../components/Toggle';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,11 +16,15 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     marginTop: theme.spacing(0),
+    background: '#ecf0f1',
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    padding: '1rem',
+    padding: '3rem',
     height: '100vh'
+  },
+  top: {
+    marginBottom: theme.spacing(3)
   }
 }));
 
@@ -66,10 +71,18 @@ export default function Dashboard() {
         <SideBar />
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
-            My mentions
+            <Grid item container className={classes.top} alignItems="center">
+              <Grid item>
+                My mentions
+              </Grid>
+              <Grid item xs={5} />
+              <Grid item>
+                {/* <Toggle /> */}
+              </Grid>
+            </Grid>
             <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
             {mentions.map((mention) => (
-                <Grid item onClick={() => { handleClick(mention) }}>
+                <Grid item key={mention._id} onClick={() => { handleClick(mention) }}>
                   <Mention
                     alt={mention.platform} 
                     imgSource={mention.image} 

@@ -16,7 +16,6 @@ async function twitter(searchTerm) {
 
         const outcome = await client.get('tweets/search/recent', params);
         const results = outcome.data;
-        console.log(results);
         results.forEach(element => {
             const mention = new Mention({
                 content: element.text,
