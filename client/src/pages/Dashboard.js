@@ -72,7 +72,7 @@ export default function Dashboard() {
   useEffect(() => {
     let orderedMentions = [];
     if (order === 'recent') {
-      orderedMentions = mentions.sort((a,b) => a.date < b.date);
+      orderedMentions = mentions.sort((a,b) => b.date - a.date);
       setMentions(orderedMentions);
       console.log("Recent =>");
       console.log(orderedMentions);

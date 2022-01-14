@@ -16,7 +16,7 @@ async function reddit(searchTerm) {
                 title: element.title,
                 platform: 'Reddit',
                 image: elementImage,
-                date: new Date(),
+                date: element.created_utc,
                 popularity: element.ups,
                 url: element.url
             });
