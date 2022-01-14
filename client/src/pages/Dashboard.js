@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
@@ -69,21 +69,27 @@ export default function Dashboard() {
     .catch(error => console.log(error));
   }, []);
 
-  useEffect(() => {
+
+  const sortMentions = useCallback(() => {
     let orderedMentions = [];
+    const initialMentions = mentions;
     if (order === 'recent') {
-      orderedMentions = mentions.sort((a,b) => b.date - a.date);
+      orderedMentions = initialMentions.sort((a,b) => b.date - a.date);
       setMentions(orderedMentions);
       console.log("Recent =>");
       console.log(orderedMentions);
     } else 
     if (order === 'popular') {
-      orderedMentions = mentions.sort((a,b) => b.popularity - a.popularity);
+      orderedMentions = initialMentions.sort((a,b) => b.popularity - a.popularity);
       setMentions(orderedMentions);
       console.log("Popularity =>");
       console.log(orderedMentions);
     }
-  }, [order, mentions]);
+  },[mentions, order]);
+
+  useEffect(() => {
+    sortMentions();
+  }, [order, sortMentions, mentions]);
 
   useEffect(() => {
     const openMentionDialog = (mention) => {

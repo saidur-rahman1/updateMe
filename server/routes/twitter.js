@@ -17,7 +17,7 @@ async function twitter(searchTerm) {
         const outcome = await client.get('tweets/search/recent', params);
         const results = outcome.data;
         results.forEach(element => {
-            var unixDate = Math.floor(new Date(element.created_at).getTime()/1000);
+            const unixDate = Math.floor(new Date(element.created_at).getTime()/1000);
             const mention = new Mention({
                 content: element.text,
                 title: createTitle(element.text),
