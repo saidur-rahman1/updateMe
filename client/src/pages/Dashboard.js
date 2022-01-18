@@ -57,39 +57,31 @@ export default function Dashboard() {
 
   const [open, setOpen] = useState(false);
   const [mention, setMention] = useState(null);
-  const [order, setOrder] = useState("recent");
+  const [order, setOrder] = useState("date");
 
   
 
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
-    axios
-    .get("http://localhost:3001/mention/")
-    .then(res => setMentions(res.data))
-    .catch(error => console.log(error));
+    async function fetchData() {
+      try {
+        const res = await axios.get("http://localhost:3001/mention/");
+        const sortedInitialLoad = res.data.sort((a,b) => b.date - a.date);
+        setMentions(sortedInitialLoad);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
   }, []);
 
-
-  const sortMentions = useCallback(() => {
-    let orderedMentions = [];
-    const initialMentions = mentions;
-    if (order === 'recent') {
-      orderedMentions = initialMentions.sort((a,b) => b.date - a.date);
-      setMentions(orderedMentions);
-      console.log("Recent =>");
-      console.log(orderedMentions);
-    } else 
-    if (order === 'popular') {
-      orderedMentions = initialMentions.sort((a,b) => b.popularity - a.popularity);
-      setMentions(orderedMentions);
-      console.log("Popularity =>");
-      console.log(orderedMentions);
-    }
-  },[mentions, order]);
+  const sortMentions = useCallback((order) => {
+    setMentions(prevMentions => [...prevMentions.sort((a, b) => b[order] - a[order])]);
+  },[]);
 
   useEffect(() => {
-    sortMentions();
-  }, [order, sortMentions, mentions]);
+    sortMentions(order);
+  }, [sortMentions, order]);
 
   useEffect(() => {
     const openMentionDialog = (mention) => {
@@ -140,7 +132,7 @@ export default function Dashboard() {
                     exclusive
                     onChange={handleOrder}
                   >
-                    <ToggleButton value="recent" className={classes.toggle} onClick={() => { toggleClick("recent") }}>
+                    <ToggleButton value="date" className={classes.toggle} onClick={() => { toggleClick() }}>
                       <Typography>Most recent</Typography>
                     </ToggleButton>
                   </ToggleButtonGroup>
@@ -149,7 +141,7 @@ export default function Dashboard() {
                     exclusive
                     onChange={handleOrder}
                   >
-                    <ToggleButton value="popular" className={classes.toggle} onClick={() => { toggleClick("popular") }}>
+                    <ToggleButton value="popularity" className={classes.toggle} onClick={() => { toggleClick() }}>
                       <Typography>Most popular</Typography>
                     </ToggleButton>
                   </ToggleButtonGroup>
