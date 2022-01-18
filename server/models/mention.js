@@ -17,11 +17,11 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
         type: String
     },
     date: {
-        type: String,
+        type: Number,
         required: true
     },
     popularity: {
-        type: String,
+        type: Number,
         required: true
     },
     url: {
