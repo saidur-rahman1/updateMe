@@ -116,8 +116,10 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <NavBar />
-      <Grid container>
-        <SideBar />
+      <Grid container xs={12}>
+        <Grid item xs={3}>
+          <SideBar />
+        </Grid>
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
             <Grid item container className={classes.top} alignItems="center">

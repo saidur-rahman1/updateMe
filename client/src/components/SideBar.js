@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,6 +7,8 @@ import Switch from '@material-ui/core/Switch';
 import reddit from '../icons/reddit.png';
 import twitter from '../icons/twitter.png';
 import bi from '../icons/bi.jpg';
+import AuthContext from '../context/AuthContext.js';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SideBar() {
     const classes = useStyles();
+    const { user } = useContext(AuthContext);
   
     const [values, setValues] = useState({
       reddit: false,
@@ -35,17 +38,23 @@ export default function SideBar() {
       twitter: false
     });
   
-    const handleInputChange = e => {
+    const handleInputChange = async (e) => {
+      const email = user.email;
       const { name, checked } = e.target
       setValues({
         ...values,
         [name]:checked
       })
+      if (checked) {
+        await axios.post("http://localhost:3001/addPlatform/", {name, email});
+      } else {
+        await axios.post("http://localhost:3001/removePlatform/", {name, email});
+      }
     }
   
   
     return (
-          <Grid item xs={3} container>
+          <Grid item xs={12} container>
             <Paper xs={3} className={classes.paper}>
               <Grid item spacing={1} container className={classes.switch}>
                 <Grid item><img src={reddit} alt="reddit" width="35rem" height="35rem"/></Grid>
