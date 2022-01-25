@@ -16,8 +16,6 @@ const mentionRouter = require("./routes/mention");
 const logoutRouter = require("./routes/logout");
 const userRouter = require("./routes/user");
 const authRouter = require("./middlewares/auth");
-const addPlatformRouter = require("./routes/addPlatform");
-const removePlatformRouter = require("./routes/removePlatform");
 
 const { json, urlencoded } = express;
 
@@ -46,8 +44,6 @@ app.use("/mention", mentionRouter);
 app.use("/logout", logoutRouter);
 app.use("/user", userRouter);
 app.use("/auth", authRouter);
-app.use("/addPlatform", addPlatformRouter);
-app.use("/removePlatform", removePlatformRouter);
 
 
 // catch 404 and forward to error handler

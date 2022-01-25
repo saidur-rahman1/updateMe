@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,7 +7,6 @@ import Switch from '@material-ui/core/Switch';
 import reddit from '../icons/reddit.png';
 import twitter from '../icons/twitter.png';
 import bi from '../icons/bi.jpg';
-import AuthContext from '../context/AuthContext.js';
 import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SideBar() {
     const classes = useStyles();
-    const { user } = useContext(AuthContext);
   
     const [values, setValues] = useState({
       reddit: false,
@@ -39,17 +37,13 @@ export default function SideBar() {
     });
   
     const handleInputChange = async (e) => {
-      const email = user.email;
       const { name, checked } = e.target
-      setValues({
-        ...values,
+      setValues(oldValues => ({
+        ...oldValues,
         [name]:checked
-      })
-      if (checked) {
-        await axios.post("http://localhost:3001/addPlatform/", {name, email});
-      } else {
-        await axios.post("http://localhost:3001/removePlatform/", {name, email});
-      }
+      }))
+      await axios.put("http://localhost:3001/user/platform", values);
+      console.log(values);
     }
   
   
