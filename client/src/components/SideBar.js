@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,6 +8,7 @@ import reddit from '../icons/reddit.png';
 import twitter from '../icons/twitter.png';
 import bi from '../icons/bi.jpg';
 import axios from 'axios';
+import AuthContext from '../context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SideBar() {
     const classes = useStyles();
+    const {dispatch} = useContext(AuthContext);
   
     const [values, setValues] = useState({
       reddit: false,
@@ -38,12 +40,11 @@ export default function SideBar() {
   
     const handleInputChange = async (e) => {
       const { name, checked } = e.target
-      setValues(oldValues => ({
-        ...oldValues,
-        [name]:checked
-      }))
-      await axios.put("http://localhost:3001/user/platform", values);
-      console.log(values);
+      const newValues = { ...values, [name]: checked };
+      setValues(newValues);
+      await axios.put("http://localhost:3001/user/platform", newValues);
+      const newPlatforms = await axios.get("http://localhost:3001/user");
+      dispatch({ type: "UPDATE_PLATFORMS", payload: newPlatforms.data });
     }
   
   
