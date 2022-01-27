@@ -5,6 +5,8 @@ const { Mention } = require("../models/mention");
 
 router.get("/", async (req, res) => {
   try {
+    const platforms = req.query.platforms;
+    console.log(platforms);
     const mention = await Mention.find();
     res.json(mention);
   } catch (error) {

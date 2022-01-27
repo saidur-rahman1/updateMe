@@ -20,9 +20,8 @@ const AuthReducer = (state, action) => {
         };
       case "UPDATE_PLATFORMS":
         return {
-          user: action.payload,
-          isFetching: false,
-          error: false,
+          ...state,
+          user: action.payload
         };
       default:
         return state;

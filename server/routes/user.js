@@ -31,7 +31,7 @@ userRouter.put("/platform", async (req, res) => {
 
     try {
         const { token } = req.cookies;
-        const platforms = req.body;
+        const fePlatforms = req.body;
         const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
 
         if (decodedToken) {
@@ -39,13 +39,13 @@ userRouter.put("/platform", async (req, res) => {
             if (!user) return res.status(401).send("Invalid credentials/User not found");
 
             const updatedPlatforms = [];
-            for (let platform in platforms) {
-                if (platforms[platform] === true) updatedPlatforms.push(platform);
+            for (let platform in fePlatforms) {
+                if (fePlatforms[platform] === true) updatedPlatforms.push(platform);
             }
             user.platforms = updatedPlatforms;
             await user.save();
-            res.sendStatus(204);
-
+            const { email, company, platforms } = user;
+            res.json({email, company, platforms});
         } else {
             res.json(false);
         }
