@@ -40,8 +40,11 @@ userRouter.put("/platform", async (req, res) => {
 
             const updatedPlatforms = [];
             for (let platform in fePlatforms) {
-                if (fePlatforms[platform] === true) updatedPlatforms.push(platform);
+                if ((fePlatforms[platform] === true) && (platform === 'reddit')) updatedPlatforms.push('Reddit');
+                if ((fePlatforms[platform] === true) && (platform === 'twitter')) updatedPlatforms.push('Twitter');
+                if ((fePlatforms[platform] === true) && (platform === 'bi')) updatedPlatforms.push('Business Insider');
             }
+            
             user.platforms = updatedPlatforms;
             await user.save();
             const { email, company, platforms } = user;

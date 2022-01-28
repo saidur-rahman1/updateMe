@@ -67,10 +67,7 @@ export default function Dashboard() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const platforms = user.platforms;
-        const res = await axios.get("http://localhost:3001/mention/", {
-          params: {platforms}
-        });
+        const res = await axios.get("http://localhost:3001/mention/");
         const sortedInitialLoad = res.data.sort((a,b) => b.date - a.date);
         setMentions(sortedInitialLoad);
       } catch (error) {
