@@ -32,11 +32,11 @@ export default function SideBar() {
     const classes = useStyles();
     const {dispatch, user} = useContext(AuthContext);
   
-    const [values, setValues] = useState({
+    const [values, setValues] = useState(() => ({
       reddit: user.platforms.includes("Reddit"),
       bi: user.platforms.includes("Business Insider"),
       twitter: user.platforms.includes("Twitter")
-    });
+    }));
   
     const handleInputChange = async (e) => {
       const { name, checked } = e.target
