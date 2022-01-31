@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,6 +7,8 @@ import Switch from '@material-ui/core/Switch';
 import reddit from '../icons/reddit.png';
 import twitter from '../icons/twitter.png';
 import bi from '../icons/bi.jpg';
+import axios from 'axios';
+import AuthContext from '../context/AuthContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,24 +30,25 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SideBar() {
     const classes = useStyles();
+    const {dispatch, user} = useContext(AuthContext);
   
-    const [values, setValues] = useState({
-      reddit: false,
-      bi: false,
-      twitter: false
-    });
+    const [values, setValues] = useState(() => ({
+      reddit: user.platforms.includes("Reddit"),
+      bi: user.platforms.includes("Business Insider"),
+      twitter: user.platforms.includes("Twitter")
+    }));
   
-    const handleInputChange = e => {
+    const handleInputChange = async (e) => {
       const { name, checked } = e.target
-      setValues({
-        ...values,
-        [name]:checked
-      })
+      const newValues = { ...values, [name]: checked };
+      setValues(newValues);
+      const updatedUser = await axios.put("http://localhost:3001/user/platform", newValues);
+      dispatch({ type: "UPDATE_PLATFORMS", payload: updatedUser.data });
     }
   
   
     return (
-          <Grid item xs={3} container>
+          <Grid item xs={12} container>
             <Paper xs={3} className={classes.paper}>
               <Grid item spacing={1} container className={classes.switch}>
                 <Grid item><img src={reddit} alt="reddit" width="35rem" height="35rem"/></Grid>

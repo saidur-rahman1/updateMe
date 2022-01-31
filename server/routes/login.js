@@ -21,6 +21,7 @@ router.post("/", async (req, res) => {
     if (!passwordCheck) return res.status(401).send("Invalid credentials/User not found");
 
     const company = user.company;
+    const platforms = [...user.platforms];
 
     const token = jwt.sign(
       {
@@ -31,7 +32,7 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true
-    }).status(201).json({email, company, token});
+    }).status(201).json({email, company, token, platforms});
 
   } catch (error) {
     console.log(error);

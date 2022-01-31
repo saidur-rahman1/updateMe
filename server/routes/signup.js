@@ -28,13 +28,16 @@ router.post("/", async (req, res) => {
     let user = await User.findOne({email: email});
     if (user) return res.status(400).send("Account already registered");
 
+    let platforms = ["Reddit", "Twitter", "Business Insider"];
+
     await reddit(company);
     await twitter(company);
 
     user = new User({
       email: email,
       company: company,
-      password: password1
+      password: password1,
+      platforms: platforms
     });
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
@@ -59,7 +62,7 @@ router.post("/", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true
-    }).status(201).json({email, company, token});
+    }).status(201).json({email, company, token, platforms});
 
   } catch (error) {
     console.log(error);

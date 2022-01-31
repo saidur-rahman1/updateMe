@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback, useContext } from 'react';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper } from '@material-ui/core';
@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useParams, useHistory } from "react-router-dom";
 import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab'
 import Typography from '@material-ui/core/Typography';
+import AuthContext from '../context/AuthContext.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +55,7 @@ export default function Dashboard() {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
+  const { user } = useContext(AuthContext);
 
   const [open, setOpen] = useState(false);
   const [mention, setMention] = useState(null);
@@ -73,7 +75,7 @@ export default function Dashboard() {
       }
     }
     fetchData();
-  }, []);
+  }, [user.platforms]);
 
   const sortMentions = useCallback((order) => {
     setMentions(prevMentions => [...prevMentions.sort((a, b) => b[order] - a[order])]);
@@ -116,8 +118,10 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <NavBar />
-      <Grid container>
-        <SideBar />
+      <Grid container xs={12}>
+        <Grid item xs={3}>
+          <SideBar />
+        </Grid>
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
             <Grid item container className={classes.top} alignItems="center">
