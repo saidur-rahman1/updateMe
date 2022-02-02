@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    padding: '1rem',
+    padding: '3rem',
     height: '100vh'
   },
   settingsMenu: {

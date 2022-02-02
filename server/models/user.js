@@ -6,8 +6,12 @@ const User = mongoose.model('User', new mongoose.Schema({
         required: true,
         unique: true
     },
-    company: {
+    email2: {
         type: String,
+        unique: true
+    },
+    company: {
+        type: [],
         required: true
     },
     password: {
