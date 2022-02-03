@@ -1,4 +1,4 @@
-const AuthReducer = (state, action) => {
+const UserReducer = (state, action) => {
     switch (action.type) {
       case "LOGIN_START":
         return {
@@ -23,9 +23,14 @@ const AuthReducer = (state, action) => {
           ...state,
           user: action.payload
         };
+      case "UPDATE_USER":
+        return {
+          ...state,
+          user: action.payload
+        };
       default:
         return state;
     }
   };
   
-  export default AuthReducer;
+  export default UserReducer;

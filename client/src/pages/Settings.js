@@ -8,6 +8,7 @@ import AuthContext from '../context/AuthContext.js';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -76,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Settings() {
   const classes = useStyles();
-  const { user } = useContext(AuthContext);
+  const { user, dispatch } = useContext(AuthContext);
 
   const initialValues = {
     id: 0,
@@ -89,7 +90,9 @@ export default function Settings() {
     companyHelperText: ''
   };
 
-  const companyList = [...user.company];
+  let tempUser = user;
+
+  const companyList = [...tempUser.company];
   const [values, setValues] = useState(initialValues);
   const [companies, setCompanies] = useState([...companyList]);
 
@@ -108,16 +111,15 @@ export default function Settings() {
           i--; 
       }
     }
-    console.log(companyList);
     setCompanies([...companyList]);
-    console.log(companies);
+    tempUser.company = companyList;
+    dispatch({ type: "UPDATE_COMPANY", payload: tempUser });
   }
 
   const addCompany = (company) => {
     let trimName = company.trim();
     if (!companyList.includes(trimName) && (trimName !== "")) {
       companyList.push(company);
-      console.log(companyList);
       setCompanies([...companyList]);
       setValues({
         ...values,
@@ -125,14 +127,15 @@ export default function Settings() {
         companyError: false,
         companyHelperText: ''
       });
+      tempUser.company = companyList;
+      dispatch({ type: "UPDATE_COMPANY", payload: tempUser });
     } else {
       setValues({
         ...values,
         companyError: true,
-        companyHelperText: 'Invalid company name'
+        companyHelperText: 'Invalid entry or name already exists'
       });
     }
-    console.log(companies);
   }
 
   const finalValidation = () => {
@@ -172,12 +175,13 @@ export default function Settings() {
     const err = finalValidation();
     if (!err) {
       let email = values.email;
-      let company = [...companies];
+      let company = [...companyList];
       const saveData = {
         email, company
       };
 
-      console.log(saveData);
+      const savedUser = await axios.put("http://localhost:3001/user/save", saveData);
+      dispatch({ type: "UPDATE_USER", payload: savedUser.data });
 
     }
   }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { createContext, useEffect, useReducer } from "react";
-import AuthReducer from "./AuthReducer";
+import UserReducer from "./UserReducer";
 
 const INITIAL_STATE = {
   user: null,
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 const AuthContext = createContext(INITIAL_STATE);
 
 function AuthContextProvider(props) {
-  const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
+  const [state, dispatch] = useReducer(UserReducer, INITIAL_STATE);
 
   useEffect(() => {
     const getUser = async () => {
