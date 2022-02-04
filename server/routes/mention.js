@@ -13,11 +13,14 @@ router.get("/", async (req, res) => {
         if (decodedToken) {
             const user = await User.findOne({_id: decodedToken.user});
             if (!user) return res.status(401).send("Invalid credentials/User not found");
-
+            let regCompany = []
+            for (let i=0 ; i < user.company.length ; i++) {
+              regCompany[i] = new RegExp(user.company[i], "i");
+            }
             const mentions = await Mention.find({
               $or: [
-                { content: new RegExp(user.company, "i") },
-                { title: new RegExp(user.company, "i") }
+                { content: { $in: regCompany } },
+                { title: { $in: regCompany } }
               ],
               $and: [
                 { platform: { $in: user.platforms } }

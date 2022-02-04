@@ -78,9 +78,9 @@ userRouter.put("/save", async (req, res) => {
             await user.save();
 
             let companyList = [...saveData.company]
-            for (let i=0 ; i < companyList.length ; i++) {
-                await reddit(companyList[i]);
-                await twitter(companyList[i]);
+            for (let company of companyList) {
+                await reddit(company);
+                await twitter(company);
             }
 
             const { email, company, platforms } = user;

@@ -9,6 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Settings() {
   const classes = useStyles();
   const { user, dispatch } = useContext(AuthContext);
+  const [snackbar, setSnackbar] = useState(false);
 
   const initialValues = {
     id: 0,
@@ -182,9 +185,20 @@ export default function Settings() {
 
       const savedUser = await axios.put("http://localhost:3001/user/save", saveData);
       dispatch({ type: "UPDATE_USER", payload: savedUser.data });
+      if (savedUser.data !== false) {
+        setSnackbar(true);
+      }
 
     }
   }
+
+  const closeSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackbar(false);
+  };
 
   // const [mentions, setMentions] = useState([]);
   // useEffect(() => {
@@ -280,6 +294,11 @@ export default function Settings() {
               </Button>
             </Grid>
           </Paper>
+          <Snackbar open={snackbar} autoHideDuration={5000} onClose={closeSnackbar}>
+            <Alert onClose={closeSnackbar} severity="success" sx={{ width: '100%' }}>
+              Saved successfully!
+            </Alert>
+          </Snackbar>
         </Grid>
       </Grid>
     </div>
