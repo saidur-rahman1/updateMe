@@ -5,7 +5,7 @@ async function reddit(searchTerm) {
     try {
         const outcome = await axios.get(`http://www.reddit.com/search.json?q=${searchTerm}`);
         const results = outcome.data.data.children.map(data => data.data);
-        results.forEach(element => {
+        results.forEach( async (element) => {
             //const elementImage = element.preview ? element.preview.images[0].source.url : 'https://www.howtogeek.com/wp-content/uploads/2019/12/Reddit-Karma-Header.jpg?height=200p&trim=2,2,2,2';
             let elementImage = 'https://www.howtogeek.com/wp-content/uploads/2019/12/Reddit-Karma-Header.jpg?height=200p&trim=2,2,2,2';
             const containsImage = element.thumbnail;
@@ -20,7 +20,10 @@ async function reddit(searchTerm) {
                 popularity: element.ups,
                 url: element.url
             });
-            mention.save();
+            let findMention = await Mention.findOne({content: mention.content, title: mention.title, platform: mention.platform});
+            if (!findMention) {
+                mention.save();
+            }
         });
     } catch (err) {
         console.log(err);

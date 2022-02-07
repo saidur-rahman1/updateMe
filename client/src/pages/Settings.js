@@ -196,7 +196,6 @@ export default function Settings() {
     if (reason === 'clickaway') {
       return;
     }
-
     setSnackbar(false);
   };
 
