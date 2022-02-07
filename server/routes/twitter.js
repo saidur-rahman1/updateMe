@@ -19,6 +19,7 @@ async function twitter(searchTerm) {
         results.forEach( async (element) => {
             const unixDate = Math.floor(new Date(element.created_at).getTime()/1000);
             const mention = new Mention({
+                id: element.id,
                 content: element.text,
                 title: createTitle(element.text),
                 platform: 'Twitter',
@@ -27,7 +28,7 @@ async function twitter(searchTerm) {
                 popularity: element.public_metrics.retweet_count,
                 url: `https://twitter.com/i/web/status/${element.id}`
             });
-            let findMention = await Mention.findOne({content: mention.content, title: mention.title, platform: mention.platform});
+            let findMention = await Mention.findOne({id: mention.id, platform: mention.platform});
             if (!findMention) {
                 mention.save();
             }

@@ -11,7 +11,8 @@ async function reddit(searchTerm) {
             const containsImage = element.thumbnail;
             if (containsImage.includes('.jpg') || containsImage.includes('.png')) elementImage = element.thumbnail;
             const elementContent = element.selftext ? element.selftext : 'No content';
-            let mention = new Mention({
+            const mention = new Mention({
+                id: element.id,
                 content: elementContent,
                 title: element.title,
                 platform: 'Reddit',
@@ -20,7 +21,7 @@ async function reddit(searchTerm) {
                 popularity: element.ups,
                 url: element.url
             });
-            let findMention = await Mention.findOne({content: mention.content, title: mention.title, platform: mention.platform});
+            let findMention = await Mention.findOne({id: mention.id, platform: mention.platform});
             if (!findMention) {
                 mention.save();
             }
