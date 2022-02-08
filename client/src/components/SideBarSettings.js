@@ -48,8 +48,8 @@ export default function SideBarSettings() {
     }
   
     return (
-          <Grid item xs={3} container>
-            <Paper className={classes.paper} component="h2">
+          <Grid item xs={12} container>
+            <Paper xs={3} className={classes.paper} component="h2">
               <Grid container spacing={1}>
                 <Grid item>Settings</Grid>
                 <Grid item>

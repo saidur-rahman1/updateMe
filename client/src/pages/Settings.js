@@ -210,15 +210,17 @@ export default function Settings() {
   return (
     <div>
       <NavBar />
-      <Grid container>
-        <SideBarSettings />
+      <Grid container xs={12}>
+        <Grid item xs={3}>
+          <SideBarSettings />
+        </Grid>
         <Grid item xs={9} container>
           <Paper className={classes.paper} component="h2">
             <Grid item container spacing={0} justifyContent="center" className={classes.marginBottom}>
               <Grid item xs={2} className={classes.marginTop}>
                 <Typography component="h2" variant="h6">Your company</Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={7}>
                 {companies.map((company) => (
                   <TextField
                     fullWidth
@@ -267,7 +269,7 @@ export default function Settings() {
               <Grid item xs={2} className={classes.marginTop}>
                 <Typography component="h2" variant="h6">Weekly report</Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={7}>
                 <TextField
                   fullWidth
                   className={classes.root}
