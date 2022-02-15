@@ -12,26 +12,16 @@ async function reddit(searchTerm) {
                 const containsImage = element.thumbnail;
                 if (containsImage.includes('.jpg') || containsImage.includes('.png')) elementImage = element.thumbnail;
                 const elementContent = element.selftext ? element.selftext : 'No content';
-                const mention = new Mention({
-                    id: element.id,
-                    content: elementContent,
-                    title: element.title,
-                    platform: 'Reddit',
-                    image: elementImage,
-                    date: element.created_utc,
-                    popularity: element.ups,
-                    url: element.url
-                });
-                await Mention.findOneAndUpdate({id: mention.id, platform: mention.platform}, 
+                await Mention.findOneAndUpdate({id: element.id, platform: 'Reddit'}, 
                     {
-                        id: mention.id,
-                        content: mention.content,
-                        title: mention.title,
-                        platform: mention.platform,
-                        image: mention.image,
-                        date: mention.date,
-                        popularity: mention.popularity,
-                        url: mention.url
+                        id: element.id,
+                        content: elementContent,
+                        title: element.title,
+                        platform: 'Reddit',
+                        image: elementImage,
+                        date: element.created_utc,
+                        popularity: element.ups,
+                        url: element.url
                     }, 
                 { upsert: true, useFindAndModify: false });
             } catch (error) {
