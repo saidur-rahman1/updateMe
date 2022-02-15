@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
     const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) return res.status(401).send("Invalid credentials/User not found");
 
-    const company = user.company;
+    const company = [...user.company];
     const platforms = [...user.platforms];
 
     const token = jwt.sign(

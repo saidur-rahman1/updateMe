@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const Mention = mongoose.model('Mention', new mongoose.Schema({
+    id: {
+        type: String,
+    },
     content: {
         type: String,
         required: true

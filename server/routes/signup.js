@@ -29,13 +29,14 @@ router.post("/", async (req, res) => {
     if (user) return res.status(400).send("Account already registered");
 
     let platforms = ["Reddit", "Twitter", "Business Insider"];
+    let companyList = [company];
 
     await reddit(company);
     await twitter(company);
 
     user = new User({
       email: email,
-      company: company,
+      company: companyList,
       password: password1,
       platforms: platforms
     });
