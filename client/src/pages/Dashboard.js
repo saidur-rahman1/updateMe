@@ -11,6 +11,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab'
 import Typography from '@material-ui/core/Typography';
 import AuthContext from '../context/AuthContext.js';
+import InfiniteScroll from 'react-infinite-scroller';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,22 +61,42 @@ export default function Dashboard() {
   const [open, setOpen] = useState(false);
   const [mention, setMention] = useState(null);
   const [order, setOrder] = useState("date");
-
-  
+  const [hasMore, sethasMore] = useState(true);
+  const [page, setpage] = useState(2);
 
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get("http://localhost:3001/mention/");
-        const sortedInitialLoad = res.data.sort((a,b) => b.date - a.date);
+        const page = 1;
+        const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+        //const sortedInitialLoad = res.data.sort((a,b) => b.date - a.date);
+        const sortedInitialLoad = res.data.sort((a,b) => b[order] - a[order]);
         setMentions(sortedInitialLoad);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [user.platforms]);
+  }, [user.platforms, order]);
+
+  const getMore = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+      const moreMentions = res.data;
+      console.log('got more');
+      console.log(moreMentions);
+      setMentions([...mentions, ...moreMentions]);
+
+      if (moreMentions.length === 0 || moreMentions.length < 20) {
+        sethasMore(false);
+      }
+
+      setpage(page + 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const sortMentions = useCallback((order) => {
     setMentions(prevMentions => [...prevMentions.sort((a, b) => b[order] - a[order])]);
@@ -152,19 +173,26 @@ export default function Dashboard() {
                 </Grid>
               </Grid>
             </Grid>
-            <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
-            {mentions.map((mention) => (
-                <Grid item key={mention._id} onClick={() => { handleClick(mention) }}>
-                  <Mention
-                    alt={mention.platform} 
-                    imgSource={mention.image} 
-                    title={mention.title}
-                    contentSource={mention.platform}
-                    text={mention.content}
-                    url={mention.url}
-                  />
-                </Grid>
-            ))}
+            <InfiniteScroll
+              loadMore={getMore}
+              hasMore={hasMore}
+              loader={<h5>Loading ...</h5>}
+              useWindow={false}
+            >
+              <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
+              {mentions.map((mention) => (
+                  <Grid item key={mention._id} onClick={() => { handleClick(mention) }}>
+                    <Mention
+                      alt={mention.platform} 
+                      imgSource={mention.image} 
+                      title={mention.title}
+                      contentSource={mention.platform}
+                      text={mention.content}
+                      url={mention.url}
+                    />
+                  </Grid>
+              ))}
+            </InfiniteScroll>
           </Paper>
         </Grid>
       </Grid>
