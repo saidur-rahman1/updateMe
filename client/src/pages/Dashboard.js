@@ -11,7 +11,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab'
 import Typography from '@material-ui/core/Typography';
 import AuthContext from '../context/AuthContext.js';
-import InfiniteScroll from 'react-infinite-scroller';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +24,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: '100%',
     padding: '3rem',
-    height: '100vh'
+    height: '100%'
+  },
+  gridHeight: {
+    height: '100%'
   },
   top: {
     marginBottom: theme.spacing(3)
@@ -62,7 +65,7 @@ export default function Dashboard() {
   const [mention, setMention] = useState(null);
   const [order, setOrder] = useState("date");
   const [hasMore, sethasMore] = useState(true);
-  const [page, setpage] = useState(2);
+  const [page, setPage] = useState(2);
 
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
@@ -70,9 +73,7 @@ export default function Dashboard() {
       try {
         const page = 1;
         const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
-        //const sortedInitialLoad = res.data.sort((a,b) => b.date - a.date);
-        const sortedInitialLoad = res.data.sort((a,b) => b[order] - a[order]);
-        setMentions(sortedInitialLoad);
+        setMentions(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -80,10 +81,27 @@ export default function Dashboard() {
     fetchData();
   }, [user.platforms, order]);
 
+  useEffect(() => {
+    async function platformUpdate() {
+      try {
+        setPage(2);
+        sethasMore(true);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    platformUpdate();
+  }, [user.platforms]);
+
+  const getMentions = async () => {
+    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+    const data = await res.data;
+    return data;
+  };
+
   const getMore = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
-      const moreMentions = res.data;
+      const moreMentions = await getMentions();
       console.log('got more');
       console.log(moreMentions);
       setMentions([...mentions, ...moreMentions]);
@@ -92,7 +110,7 @@ export default function Dashboard() {
         sethasMore(false);
       }
 
-      setpage(page + 1);
+      setPage(page + 1);
     } catch (error) {
       console.log(error);
     }
@@ -134,6 +152,8 @@ export default function Dashboard() {
 
   const toggleClick = (value) => {
     setOrder(value);
+    setPage(2);
+    sethasMore(true);
   }
 
   return (
@@ -174,10 +194,10 @@ export default function Dashboard() {
               </Grid>
             </Grid>
             <InfiniteScroll
-              loadMore={getMore}
+              dataLength={mentions.length}
+              next={getMore}
               hasMore={hasMore}
               loader={<h5>Loading ...</h5>}
-              useWindow={false}
             >
               <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
               {mentions.map((mention) => (

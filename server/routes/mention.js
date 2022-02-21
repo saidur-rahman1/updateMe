@@ -15,34 +15,22 @@ router.get("/", async (req, res) => {
         if (decodedToken) {
             const user = await User.findOne({_id: decodedToken.user});
             if (!user) return res.status(401).send("Invalid credentials/User not found");
-            const skip = (page - 1) * 20; 
+            const MAX_MENTIONS_PER_PAGE = 20;
+            const skip = (page - 1) * MAX_MENTIONS_PER_PAGE; 
             let regCompany = []
             for (let i=0 ; i < user.company.length ; i++) {
               regCompany[i] = new RegExp(user.company[i], "i");
             }
-            if (order === 'date') {
-              const mentions = await Mention.find({
-                $or: [
-                  { content: { $in: regCompany } },
-                  { title: { $in: regCompany } }
-                ],
-                $and: [
-                  { platform: { $in: user.platforms } }
-                ]
-              }).sort({date: -1}).skip(skip).limit(20);
-              res.json(mentions);
-            } else {
-              const mentions = await Mention.find({
-                $or: [
-                  { content: { $in: regCompany } },
-                  { title: { $in: regCompany } }
-                ],
-                $and: [
-                  { platform: { $in: user.platforms } }
-                ]
-              }).sort({popularity: -1}).skip(skip).limit(20);
-              res.json(mentions);
-            }
+            const mentions = await Mention.find({
+              $or: [
+                { content: { $in: regCompany } },
+                { title: { $in: regCompany } }
+              ],
+              $and: [
+                { platform: { $in: user.platforms } }
+              ]
+            }).sort({[order]: -1}).skip(skip).limit(20);
+            res.json(mentions); 
         } else {
             res.json(false);
         }
