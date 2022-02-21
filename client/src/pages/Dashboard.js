@@ -82,16 +82,9 @@ export default function Dashboard() {
   }, [user.platforms, order]);
 
   useEffect(() => {
-    async function platformUpdate() {
-      try {
-        setPage(2);
-        sethasMore(true);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    platformUpdate();
-  }, [user.platforms]);
+    setPage(2);
+    sethasMore(true);
+}, [user.platforms]);
 
   const getMentions = async () => {
     const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
@@ -102,15 +95,13 @@ export default function Dashboard() {
   const getMore = async () => {
     try {
       const moreMentions = await getMentions();
-      console.log('got more');
-      console.log(moreMentions);
       setMentions([...mentions, ...moreMentions]);
 
       if (moreMentions.length === 0 || moreMentions.length < 20) {
         sethasMore(false);
       }
 
-      setPage(page + 1);
+      setPage(prevPage => prevPage + 1);
     } catch (error) {
       console.log(error);
     }

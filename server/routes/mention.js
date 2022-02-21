@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
               $and: [
                 { platform: { $in: user.platforms } }
               ]
-            }).sort({[order]: -1}).skip(skip).limit(20);
+            }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
             res.json(mentions); 
         } else {
             res.json(false);
