@@ -11,6 +11,7 @@ import { useParams, useHistory } from "react-router-dom";
 import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab'
 import Typography from '@material-ui/core/Typography';
 import AuthContext from '../context/AuthContext.js';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,7 +24,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: '100%',
     padding: '3rem',
-    height: '100vh'
+    height: '100%'
+  },
+  gridHeight: {
+    height: '100%'
   },
   top: {
     marginBottom: theme.spacing(3)
@@ -60,22 +64,48 @@ export default function Dashboard() {
   const [open, setOpen] = useState(false);
   const [mention, setMention] = useState(null);
   const [order, setOrder] = useState("date");
-
-  
+  const [hasMore, sethasMore] = useState(true);
+  const [page, setPage] = useState(2);
 
   const [mentions, setMentions] = useState([]);
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await axios.get("http://localhost:3001/mention/");
-        const sortedInitialLoad = res.data.sort((a,b) => b.date - a.date);
-        setMentions(sortedInitialLoad);
+        const page = 1;
+        const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+        setMentions(res.data);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [user.platforms]);
+  }, [user.platforms, order]);
+
+  useEffect(() => {
+    setPage(2);
+    sethasMore(true);
+}, [user.platforms]);
+
+  const getMentions = async () => {
+    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+    const data = await res.data;
+    return data;
+  };
+
+  const getMore = async () => {
+    try {
+      const moreMentions = await getMentions();
+      setMentions([...mentions, ...moreMentions]);
+
+      if (moreMentions.length === 0 || moreMentions.length < 20) {
+        sethasMore(false);
+      }
+
+      setPage(prevPage => prevPage + 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const sortMentions = useCallback((order) => {
     setMentions(prevMentions => [...prevMentions.sort((a, b) => b[order] - a[order])]);
@@ -113,6 +143,8 @@ export default function Dashboard() {
 
   const toggleClick = (value) => {
     setOrder(value);
+    setPage(2);
+    sethasMore(true);
   }
 
   return (
@@ -152,19 +184,26 @@ export default function Dashboard() {
                 </Grid>
               </Grid>
             </Grid>
-            <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
-            {mentions.map((mention) => (
-                <Grid item key={mention._id} onClick={() => { handleClick(mention) }}>
-                  <Mention
-                    alt={mention.platform} 
-                    imgSource={mention.image} 
-                    title={mention.title}
-                    contentSource={mention.platform}
-                    text={mention.content}
-                    url={mention.url}
-                  />
-                </Grid>
-            ))}
+            <InfiniteScroll
+              dataLength={mentions.length}
+              next={getMore}
+              hasMore={hasMore}
+              loader={<h5>Loading ...</h5>}
+            >
+              <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
+              {mentions.map((mention) => (
+                  <Grid item key={mention._id} onClick={() => { handleClick(mention) }}>
+                    <Mention
+                      alt={mention.platform} 
+                      imgSource={mention.image} 
+                      title={mention.title}
+                      contentSource={mention.platform}
+                      text={mention.content}
+                      url={mention.url}
+                    />
+                  </Grid>
+              ))}
+            </InfiniteScroll>
           </Paper>
         </Grid>
       </Grid>

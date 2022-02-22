@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: '100%',
     padding: '1rem',
-    height: '100vh'
+    height: '100%'
   },
   switch: {
       alignItems:'center', 
@@ -25,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
   },
   gridWidth: {
     width: '11rem'
+  },
+  gridHeight: {
+    height: '100%'
   }
 }));
 
@@ -48,7 +51,7 @@ export default function SideBar() {
   
   
     return (
-          <Grid item xs={12} container>
+          <Grid item xs={12} container className={classes.gridHeight}>
             <Paper xs={3} className={classes.paper}>
               <Grid item spacing={1} container className={classes.switch}>
                 <Grid item><img src={reddit} alt="reddit" width="35rem" height="35rem"/></Grid>

@@ -9,10 +9,14 @@ router.get("/", async (req, res) => {
   try {
         const { token } = req.cookies;
         const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
+        const order = req.query.order;
+        const page = req.query.page;
 
         if (decodedToken) {
             const user = await User.findOne({_id: decodedToken.user});
             if (!user) return res.status(401).send("Invalid credentials/User not found");
+            const MAX_MENTIONS_PER_PAGE = 20;
+            const skip = (page - 1) * MAX_MENTIONS_PER_PAGE; 
             let regCompany = []
             for (let i=0 ; i < user.company.length ; i++) {
               regCompany[i] = new RegExp(user.company[i], "i");
@@ -25,9 +29,8 @@ router.get("/", async (req, res) => {
               $and: [
                 { platform: { $in: user.platforms } }
               ]
-            });
-            res.json(mentions);
-            
+            }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
+            res.json(mentions); 
         } else {
             res.json(false);
         }

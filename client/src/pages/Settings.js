@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     width: '100%',
     padding: '3rem',
-    height: '100vh'
+    height: '69vh',
+    overflow: 'hidden'
   },
   remove: {
     cursor: 'pointer',
