@@ -20,6 +20,9 @@ const User = mongoose.model('User', new mongoose.Schema({
     },
     platforms: {
         type: []
+    },
+    search: {
+        type: String
     }
   }));
 

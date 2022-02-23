@@ -86,6 +86,8 @@ export default function Dashboard() {
     sethasMore(true);
 }, [user.platforms]);
 
+console.log(user.search);
+
   const getMentions = async () => {
     const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
     const data = await res.data;
@@ -147,6 +149,13 @@ export default function Dashboard() {
     sethasMore(true);
   }
 
+  const search = (data) => {
+    return data.filter(
+      (item) => item.title.toLowerCase().includes(user.search) ||
+                item.content.toLowerCase().includes(user.search)
+    );
+  }
+
   return (
     <div className={classes.root}>
       <NavBar />
@@ -191,7 +200,7 @@ export default function Dashboard() {
               loader={<h5>Loading ...</h5>}
             >
               <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
-              {mentions.map((mention) => (
+              {search(mentions).map((mention) => (
                   <Grid item key={mention._id} onClick={() => { handleClick(mention) }}>
                     <Mention
                       alt={mention.platform} 

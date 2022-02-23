@@ -28,6 +28,11 @@ const UserReducer = (state, action) => {
           ...state,
           user: action.payload
         };
+      case "SEARCH":
+        return {
+          ...state,
+          user: action.payload
+        };
       default:
         return state;
     }
