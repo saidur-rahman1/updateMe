@@ -10,15 +10,12 @@ import AuthContext from '../context/AuthContext';
 
 export default function NavBar() {
   const classes = useStyles();
-  const { user, dispatch } = useContext(AuthContext);
-  const [values, setValues] = useState();
-
-  let tempUser = user;
+  const { dispatch } = useContext(AuthContext);
+  const [search, setSearch] = useState('');
 
   const handleInputChange = e => {
-    setValues(e.target.value)
-    tempUser.search = e.target.value;
-    dispatch({ type: "SEARCH", payload: tempUser });
+    setSearch(e.target.value)
+    dispatch({ type: "SEARCH", query: e.target.value });
   }
 
   return (
@@ -43,7 +40,7 @@ export default function NavBar() {
               id="search"
               placeholder="Keyword..."
               name="search"
-              value={values}
+              value={search}
               onChange={handleInputChange}
             />
           </Grid>

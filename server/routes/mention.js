@@ -9,8 +9,7 @@ router.get("/", async (req, res) => {
   try {
         const { token } = req.cookies;
         const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
-        const order = req.query.order;
-        const page = req.query.page;
+        const {order, page, search} = req.query;
 
         if (decodedToken) {
             const user = await User.findOne({_id: decodedToken.user});
@@ -18,19 +17,41 @@ router.get("/", async (req, res) => {
             const MAX_MENTIONS_PER_PAGE = 20;
             const skip = (page - 1) * MAX_MENTIONS_PER_PAGE; 
             let regCompany = []
+            let trimSearch = '';
             for (let i=0 ; i < user.company.length ; i++) {
               regCompany[i] = new RegExp(user.company[i], "i");
             }
-            const mentions = await Mention.find({
-              $or: [
-                { content: { $in: regCompany } },
-                { title: { $in: regCompany } }
-              ],
-              $and: [
-                { platform: { $in: user.platforms } }
-              ]
-            }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
-            res.json(mentions); 
+            if (search) trimSearch = search.trim();
+            if (trimSearch) {
+              const regSearch = new RegExp(trimSearch, "i");
+              const mentions = await Mention.find({
+                $or: [
+                  { content: { $in: regCompany } },
+                  { title: { $in: regCompany } }
+                ],
+                $and: [
+                  { platform: { $in: user.platforms } },
+                  {
+                    $or: [
+                      { content: regSearch },
+                      { title: regSearch }
+                    ]
+                  }
+                ]
+              }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
+              res.json(mentions);
+            } else {
+              const mentions = await Mention.find({
+                $or: [
+                  { content: { $in: regCompany } },
+                  { title: { $in: regCompany } }
+                ],
+                $and: [
+                  { platform: { $in: user.platforms } }
+                ]
+              }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
+              res.json(mentions);
+            }            
         } else {
             res.json(false);
         }

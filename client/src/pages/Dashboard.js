@@ -68,28 +68,29 @@ export default function Dashboard() {
   const [page, setPage] = useState(2);
 
   const [mentions, setMentions] = useState([]);
+  const search = user.search;
   useEffect(() => {
     async function fetchData() {
       try {
         const page = 1;
-        const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+        const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
         setMentions(res.data);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [user.platforms, order]);
+  }, [user.platforms, order, search]);
 
   useEffect(() => {
     setPage(2);
     sethasMore(true);
-}, [user.platforms]);
+}, [user.platforms, search]);
 
 console.log(user.search);
 
   const getMentions = async () => {
-    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
     const data = await res.data;
     return data;
   };
@@ -149,13 +150,6 @@ console.log(user.search);
     sethasMore(true);
   }
 
-  const search = (data) => {
-    return data.filter(
-      (item) => item.title.toLowerCase().includes(user.search) ||
-                item.content.toLowerCase().includes(user.search)
-    );
-  }
-
   return (
     <div className={classes.root}>
       <NavBar />
@@ -200,7 +194,7 @@ console.log(user.search);
               loader={<h5>Loading ...</h5>}
             >
               <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
-              {search(mentions).map((mention) => (
+              {mentions.map((mention) => (
                   <Grid item key={mention._id} onClick={() => { handleClick(mention) }}>
                     <Mention
                       alt={mention.platform} 
