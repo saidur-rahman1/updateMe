@@ -45,8 +45,8 @@ export default function SideBar() {
       const { name, checked } = e.target
       const newValues = { ...values, [name]: checked };
       setValues(newValues);
-      const updatedPlatforms = await axios.put("http://localhost:3001/user/platform", newValues);
-      dispatch({ type: "UPDATE_PLATFORMS", query: updatedPlatforms.data.platforms });
+      const { data } = await axios.put("http://localhost:3001/user/platform", newValues);
+      dispatch({ type: "UPDATE_PLATFORMS", platforms: data.platforms });
     }
   
   

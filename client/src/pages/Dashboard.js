@@ -87,8 +87,6 @@ export default function Dashboard() {
     sethasMore(true);
 }, [user.platforms, search]);
 
-console.log(user.search);
-
   const getMentions = async () => {
     const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
     const data = await res.data;

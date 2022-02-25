@@ -23,7 +23,7 @@ const UserReducer = (state, action) => {
           ...state,
           user: {
             ...state.user,
-            platforms: action.query
+            platforms: action.platforms
           }
         };
       case "UPDATE_USER":

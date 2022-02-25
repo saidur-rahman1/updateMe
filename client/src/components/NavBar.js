@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { useStyles } from '../styles.js';
@@ -13,23 +13,18 @@ export default function NavBar() {
   const { dispatch } = useContext(AuthContext);
   const [search, setSearch] = useState('');
 
-  const debounce = (fn) => {
-    let timer;
-    return () => {
-      clearTimeout(timer)
-      timer = setTimeout(() => {
-        fn()
-      }, 1000)
-    }
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      dispatch({ type: 'SEARCH', query: search });
+    }, 1000);
 
-  const dispatcher = (e) => {
-    dispatch({ type: "SEARCH", query: e.target.value });
-  }
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [search, dispatch]);
 
   const handleInputChange = (e) => {
     setSearch(e.target.value);
-    debounce(dispatcher(e));
   }
 
   return (
