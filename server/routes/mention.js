@@ -27,16 +27,11 @@ router.get("/", async (req, res) => {
               const mentions = await Mention.find({
                 $or: [
                   { content: { $in: regCompany } },
-                  { title: { $in: regCompany } }
+                  { title: { $in: regCompany } },
                 ],
                 $and: [
-                  { platform: { $in: user.platforms } },
-                  {
-                    $or: [
-                      { content: regSearch },
-                      { title: regSearch }
-                    ]
-                  }
+                  {platform: { $in: user.platforms }},
+                  {$or: [{ content: { $in: regSearch } }, { title: { $in: regSearch } }]}
                 ]
               }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
               res.json(mentions);
@@ -47,7 +42,7 @@ router.get("/", async (req, res) => {
                   { title: { $in: regCompany } }
                 ],
                 $and: [
-                  { platform: { $in: user.platforms } }
+                  {platform: { $in: user.platforms }}
                 ]
               }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
               res.json(mentions);

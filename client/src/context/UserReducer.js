@@ -21,7 +21,10 @@ const UserReducer = (state, action) => {
       case "UPDATE_PLATFORMS":
         return {
           ...state,
-          user: action.payload
+          user: {
+            ...state.user,
+            platforms: action.query
+          }
         };
       case "UPDATE_USER":
         return {

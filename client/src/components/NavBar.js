@@ -13,9 +13,23 @@ export default function NavBar() {
   const { dispatch } = useContext(AuthContext);
   const [search, setSearch] = useState('');
 
-  const handleInputChange = e => {
-    setSearch(e.target.value)
+  const debounce = (fn) => {
+    let timer;
+    return () => {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        fn()
+      }, 1000)
+    }
+  }
+
+  const dispatcher = (e) => {
     dispatch({ type: "SEARCH", query: e.target.value });
+  }
+
+  const handleInputChange = (e) => {
+    setSearch(e.target.value);
+    debounce(dispatcher(e));
   }
 
   return (
