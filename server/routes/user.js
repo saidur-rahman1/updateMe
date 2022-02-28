@@ -49,8 +49,8 @@ userRouter.put("/platform", async (req, res) => {
             
             user.platforms = updatedPlatforms;
             await user.save();
-            const { email, company, platforms } = user;
-            res.json({email, company, platforms});
+            const { platforms } = user;
+            res.json({platforms});
         } else {
             res.json(false);
         }

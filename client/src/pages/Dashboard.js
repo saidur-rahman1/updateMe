@@ -68,26 +68,27 @@ export default function Dashboard() {
   const [page, setPage] = useState(2);
 
   const [mentions, setMentions] = useState([]);
+  const search = user.search;
   useEffect(() => {
     async function fetchData() {
       try {
         const page = 1;
-        const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+        const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
         setMentions(res.data);
       } catch (error) {
         console.log(error);
       }
     }
     fetchData();
-  }, [user.platforms, order]);
+  }, [user.platforms, order, search]);
 
   useEffect(() => {
     setPage(2);
     sethasMore(true);
-}, [user.platforms]);
+}, [user.platforms, search]);
 
   const getMentions = async () => {
-    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page}});
+    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
     const data = await res.data;
     return data;
   };

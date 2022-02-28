@@ -82,6 +82,18 @@ const useStyles = makeStyles((theme) => ({
     display: 'block',
     maxWidth: '100%',
     maxHeight: '100%',
+  },
+  debouncedSearch: {
+    [`& fieldset`]: {
+      borderRadius: 35,
+      height: '3rem'
+    },
+    background: 'white',
+    width: '40%',
+    borderRadius: '35px',
+    height: '2.8rem',
+    marginBottom: theme.spacing(0),
+    marginTop: theme.spacing(0),
   }
 }));
 
