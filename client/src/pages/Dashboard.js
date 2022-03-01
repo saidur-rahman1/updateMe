@@ -12,6 +12,7 @@ import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab'
 import Typography from '@material-ui/core/Typography';
 import AuthContext from '../context/AuthContext.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { io } from 'socket.io-client';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +61,7 @@ export default function Dashboard() {
   const history = useHistory();
   const { id } = useParams();
   const { user } = useContext(AuthContext);
+  const socket = io('http://localhost:3002');
 
   const [open, setOpen] = useState(false);
   const [mention, setMention] = useState(null);
@@ -69,6 +71,11 @@ export default function Dashboard() {
 
   const [mentions, setMentions] = useState([]);
   const search = user.search;
+
+  socket.on('connect', () => {
+    socket.emit("email", user.email);
+  })
+
   useEffect(() => {
     async function fetchData() {
       try {

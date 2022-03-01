@@ -70,4 +70,19 @@ mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
 // Run the cron job
 companyQueue();
 
+// Run Socket.io
+const io = require('socket.io')(3002, {
+  cors: {
+    origin: "http://localhost:3000",
+  },
+})
+const cache = {};
+io.on('connect', (socket)=>{
+  socket.on("email", (email) => {
+    console.log(email + " is currently connected");
+  })
+  // socket.headers.cookies['']
+  // socket.disconnect()
+})
+
 module.exports = app;
