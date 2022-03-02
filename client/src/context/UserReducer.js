@@ -39,11 +39,6 @@ const UserReducer = (state, action) => {
             search: action.query
           }
         };
-      case "SET_SOCKET":
-        return {
-          ...state,
-          socket: action.socket
-        };
       default:
         return state;
     }

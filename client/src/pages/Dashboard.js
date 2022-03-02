@@ -12,6 +12,7 @@ import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab'
 import Typography from '@material-ui/core/Typography';
 import AuthContext from '../context/AuthContext.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { SocketContext } from '../context/Socket.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,7 +60,8 @@ export default function Dashboard() {
   const classes = useStyles();
   const history = useHistory();
   const { id } = useParams();
-  const { user, socket } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
+  const socket = useContext(SocketContext);
 
   const [open, setOpen] = useState(false);
   const [mention, setMention] = useState(null);
