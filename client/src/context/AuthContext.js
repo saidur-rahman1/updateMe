@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { createContext, useEffect, useReducer } from "react";
 import UserReducer from "./UserReducer";
+import { io } from 'socket.io-client';
 
 const INITIAL_STATE = {
   user: null,
@@ -18,7 +19,12 @@ function AuthContextProvider(props) {
       const { data } = await axios.get("http://localhost:3001/user");
       if (data) dispatch({ type: 'LOGIN_SUCCESS', payload: data })
     }
+    const setSocket = () => {
+      const socket = io('http://localhost:3001');
+      dispatch({ type: "SET_SOCKET", socket: socket });
+    }
     getUser();
+    setSocket();
   }, []);
 
   return (
