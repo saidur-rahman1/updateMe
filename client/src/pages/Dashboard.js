@@ -72,10 +72,11 @@ export default function Dashboard() {
   const [mentions, setMentions] = useState([]);
   const search = user.search;
 
-  console.log(socket);
-  // socket.on('connect', () => {
-  //   socket.emit("email", user.email);
-  // })
+  socket.on('dbUpdate', async () => {
+    const page = 1;
+    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
+    setMentions(res.data);
+  });
 
   useEffect(() => {
     async function fetchData() {
