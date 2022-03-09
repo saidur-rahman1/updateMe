@@ -8,7 +8,7 @@ const cors = require('cors');
 const { companyQueue } = require ('./companyQueue');
 const reddit = require("./routes/reddit");
 const { Server } = require("socket.io");
-var http = require("http");
+const http = require("http");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
