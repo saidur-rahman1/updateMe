@@ -1,6 +1,7 @@
 const Queue = require('bull');
 const User = require("./models/user");
 const { mentionsQueue } = require('./mentionsQueue');
+const { io } = require('./app');
 
 const cQueue = new Queue('Company Queue');
 
@@ -8,6 +9,7 @@ cQueue.process(async (job, done) => {
     try {
         const companies = await User.distinct("company");
         companies.forEach(company => mentionsQueue(company));
+        io.emit('dbUpdate');
         done();    
     } catch(err) {
         console.error(err);

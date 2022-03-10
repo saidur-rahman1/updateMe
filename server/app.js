@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const { companyQueue } = require ('./companyQueue');
 const reddit = require("./routes/reddit");
+const { Server } = require("socket.io");
+const http = require("http");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
@@ -67,7 +69,13 @@ mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
 .then(() => console.log("Connected to MongoDB"))
 .catch(error => console.error("Could not connect to MongoDB", error));
 
+// Initial Socket.io
+var server = http.createServer(app);
+const io = new Server(server, { cors: {
+  origin: "http://localhost:3000",
+}, });
+
 // Run the cron job
 companyQueue();
 
-module.exports = app;
+module.exports = {app, server, io};

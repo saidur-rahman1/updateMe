@@ -10,6 +10,7 @@ import Settings from "./pages/Settings";
 import { AuthContextProvider } from "./context/AuthContext";
 import axios from 'axios';
 import ProtectedRoute from "./components/ProtectedRoute";
+import { SocketContext, socket } from "./context/Socket";
 
 import "./App.css";
 
@@ -20,15 +21,17 @@ function App() {
   return (
     <MuiThemeProvider theme={theme}>
       <AuthContextProvider>
-        <BrowserRouter>
-          <Switch>
-            <Route path="/" component={SignUp} exact />
-            <Route path="/login" component={Login} />
-            <ProtectedRoute path="/dashboard/:id" component={Dashboard} />
-            <ProtectedRoute path="/dashboard" component={Dashboard}/>
-            <ProtectedRoute path="/settings" component={Settings}/>
-          </Switch>
-        </BrowserRouter>
+        <SocketContext.Provider value={socket}>
+          <BrowserRouter>
+            <Switch>
+              <Route path="/" component={SignUp} exact />
+              <Route path="/login" component={Login} />
+              <ProtectedRoute path="/dashboard/:id" component={Dashboard} />
+              <ProtectedRoute path="/dashboard" component={Dashboard}/>
+              <ProtectedRoute path="/settings" component={Settings}/>
+            </Switch>
+          </BrowserRouter>
+        </SocketContext.Provider>
       </AuthContextProvider>
     </MuiThemeProvider>
   );

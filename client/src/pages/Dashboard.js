@@ -12,6 +12,7 @@ import { ToggleButtonGroup, ToggleButton } from '@material-ui/lab'
 import Typography from '@material-ui/core/Typography';
 import AuthContext from '../context/AuthContext.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { SocketContext } from '../context/Socket.js';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,6 +61,7 @@ export default function Dashboard() {
   const history = useHistory();
   const { id } = useParams();
   const { user } = useContext(AuthContext);
+  const socket = useContext(SocketContext);
 
   const [open, setOpen] = useState(false);
   const [mention, setMention] = useState(null);
@@ -69,6 +71,20 @@ export default function Dashboard() {
 
   const [mentions, setMentions] = useState([]);
   const search = user.search;
+
+  const socketMentions = useCallback(async () => {
+    const page = 1;
+    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
+    setMentions(res.data);
+  }, [order, search])
+
+  useEffect(() => {
+    socket.on('dbUpdate', socketMentions);
+    return () => {
+      socket.off('dbUpdate');
+    }
+  }, [socket, socketMentions]);
+
   useEffect(() => {
     async function fetchData() {
       try {
