@@ -72,4 +72,29 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.put("/like", async (req, res) => {
+  try {
+        const { token } = req.cookies;
+        const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
+        const {mentionId} = req.query;
+
+        if (decodedToken) {
+          const mention = await Mention.findOne({_id: mentionId});
+          if (!mention.likes.includes(decodedToken.user)) {
+            await mention.updateOne({ $push: { likes: decodedToken.user } });
+            res.status(200).json("liked");
+          } else {
+            const index = mention.likes.indexOf(decodedToken.user);
+            mention.likes.splice(index, 1);
+            await mention.save();
+            res.status(200).json("unliked");
+          }
+        } else {
+            res.json(false);
+        }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = router;
