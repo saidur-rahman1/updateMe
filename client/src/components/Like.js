@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect } from 'react';
 import axios from 'axios';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -7,21 +7,27 @@ import Tooltip from '@material-ui/core/Tooltip';
 export default function Like({mention}) {
 
   const [like, setLike] = useState(false);
-  const [color, setColor] = useState('disabled');
-  const [tip, setTip] = useState('Like');
+  const color = like ? 'primary' : 'disabled';
+  const tip = like ? 'Unlike' : 'Like';
 
   const mentionId = mention._id;
 
+  useEffect(() => {
+    const getLike = async () => {
+      const res = await axios.get("http://localhost:3001/mention/getlike/", {params:{mentionId}});
+      setLike(res.data)
+    };
+    getLike();
+  }, [mentionId]);
+
+  const queryData = {
+    mentionId
+  };
+
   const likeClick = async () => {
-    await axios.put("http://localhost:3001/mention/like", {params:{mentionId}});
+    await axios.put("http://localhost:3001/mention/like", queryData);
     setLike(prevLike => !prevLike);
-    if (like) {
-      setColor('primary');
-      setTip('Unlike');
-    } else {
-      setColor('disabled');
-      setTip('Like');
-    }
+    console.log(mentionId);
   }
 
 

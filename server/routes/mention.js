@@ -72,7 +72,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/like", async (req, res) => {
+router.get("/getlike", async (req, res) => {
   try {
         const { token } = req.cookies;
         const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
@@ -80,6 +80,28 @@ router.put("/like", async (req, res) => {
 
         if (decodedToken) {
           const mention = await Mention.findOne({_id: mentionId});
+          if (mention.likes.includes(decodedToken.user)) {
+            res.json(true);
+          } else {
+            res.json(false);
+          }
+        } else {
+            res.json(false);
+        }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+router.put("/like", async (req, res) => {
+  try {
+        const { token } = req.cookies;
+        const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
+        const queryData = req.body;
+
+        if (decodedToken) {
+          console.log(queryData.mentionId);
+          const mention = await Mention.findOne({_id: queryData.mentionId});
           if (!mention.likes.includes(decodedToken.user)) {
             await mention.updateOne({ $push: { likes: decodedToken.user } });
             res.status(200).json("liked");
