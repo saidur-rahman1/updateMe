@@ -212,6 +212,7 @@ export default function Dashboard() {
                   <Grid container>
                     <Grid container key={mention._id} onClick={() => { handleClick(mention) }}>
                       <Mention
+                        id={mention._id}
                         alt={mention.platform} 
                         imgSource={mention.image} 
                         title={mention.title}

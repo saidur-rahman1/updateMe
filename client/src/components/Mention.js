@@ -69,7 +69,7 @@ export default function Mention(props) {
               </Grid>
           </Grid>
           <Grid container justifyContent="flex-end" style={{ marginTop: '1rem', marginRight: '1rem', marginBottom: '0.5rem' }}>
-                <Like mention={props} style={{ zIndex: '2', cursor: 'pointer' }} />
+                <Like mention={props} />
             </Grid>
       </Paper>
   );

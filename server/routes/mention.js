@@ -95,7 +95,7 @@ router.put("/like", async (req, res) => {
         const { token } = req.cookies;
         const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
         const queryData = req.body;
-
+        
         if (decodedToken) {
           const mention = await Mention.findOne({_id: queryData.mentionId});
           if (!mention.likes.includes(decodedToken.user)) {

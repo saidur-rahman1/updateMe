@@ -10,7 +10,7 @@ export default function Like({mention}) {
   const color = like ? 'primary' : 'disabled';
   const tip = like ? 'Unlike' : 'Like';
 
-  const mentionId = mention._id;
+  const mentionId = mention.id;
 
   // useEffect(() => {
   //   const getLike = async () => {
