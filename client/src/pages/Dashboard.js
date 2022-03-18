@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import AuthContext from '../context/AuthContext.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { SocketContext } from '../context/Socket.js';
-import Like from '../components/Like';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -218,10 +218,8 @@ export default function Dashboard() {
                         contentSource={mention.platform}
                         text={mention.content}
                         url={mention.url}
+                        likes={mention.likes}
                       />
-                    </Grid>
-                    <Grid container justifyContent="flex-end" style={{ marginTop: '0.25rem', marginRight: '1rem', marginBottom: '1rem', cursor: 'pointer' }}>
-                      <Like mention={mention} />
                     </Grid>
                   </Grid>
                 ))}

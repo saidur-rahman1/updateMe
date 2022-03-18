@@ -45,6 +45,13 @@ router.get("/", async (req, res) => {
                   {platform: { $in: user.platforms }}
                 ]
               }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
+              mentions.forEach((mention) => {
+                if (mention.likes.includes(decodedToken.user)) {
+                  mention.likes = true;
+                } else {
+                  mention.likes = false;
+                }
+              });
               res.json(mentions);
             }            
         } else {
@@ -62,36 +69,26 @@ router.get("/", async (req, res) => {
 // .catch(error => res.status(400).res.json(error));
 // });
 
-router.get("/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const mention = await Mention.findOne({_id: id});
-    res.json(mention);
-  } catch (error) {
-    console.error(error);
-  }
-});
+// router.get("/getlike", async (req, res) => {
+//   try {
+//         const { token } = req.cookies;
+//         const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
+//         const {mentionId} = req.query;
 
-router.get("/getlike", async (req, res) => {
-  try {
-        const { token } = req.cookies;
-        const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
-        const {mentionId} = req.query;
-
-        if (decodedToken) {
-          const mention = await Mention.findOne({_id: mentionId});
-          if (mention.likes.includes(decodedToken.user)) {
-            res.json(true);
-          } else {
-            res.json(false);
-          }
-        } else {
-            res.json(false);
-        }
-  } catch (error) {
-    console.log(error);
-  }
-});
+//         if (decodedToken) {
+//           const mention = await Mention.findOne({_id: mentionId});
+//           if (mention.likes.includes(decodedToken.user)) {
+//             res.json(true);
+//           } else {
+//             res.json(false);
+//           }
+//         } else {
+//             res.json(false);
+//         }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
 
 router.put("/like", async (req, res) => {
   try {
@@ -100,7 +97,6 @@ router.put("/like", async (req, res) => {
         const queryData = req.body;
 
         if (decodedToken) {
-          console.log(queryData.mentionId);
           const mention = await Mention.findOne({_id: queryData.mentionId});
           if (!mention.likes.includes(decodedToken.user)) {
             await mention.updateOne({ $push: { likes: decodedToken.user } });
@@ -116,6 +112,16 @@ router.put("/like", async (req, res) => {
         }
   } catch (error) {
     console.log(error);
+  }
+});
+
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const mention = await Mention.findOne({_id: id});
+    res.json(mention);
+  } catch (error) {
+    console.error(error);
   }
 });
 
