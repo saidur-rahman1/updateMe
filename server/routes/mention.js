@@ -69,27 +69,6 @@ router.get("/", async (req, res) => {
 // .catch(error => res.status(400).res.json(error));
 // });
 
-// router.get("/getlike", async (req, res) => {
-//   try {
-//         const { token } = req.cookies;
-//         const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
-//         const {mentionId} = req.query;
-
-//         if (decodedToken) {
-//           const mention = await Mention.findOne({_id: mentionId});
-//           if (mention.likes.includes(decodedToken.user)) {
-//             res.json(true);
-//           } else {
-//             res.json(false);
-//           }
-//         } else {
-//             res.json(false);
-//         }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
 router.put("/like", async (req, res) => {
   try {
         const { token } = req.cookies;
@@ -98,15 +77,11 @@ router.put("/like", async (req, res) => {
         
         if (decodedToken) {
           const mention = await Mention.findOne({_id: queryData.mentionId});
-          if (!mention.likes.includes(decodedToken.user)) {
-            await mention.updateOne({ $push: { likes: decodedToken.user } });
-            res.status(200).json("liked");
-          } else {
-            const index = mention.likes.indexOf(decodedToken.user);
-            mention.likes.splice(index, 1);
-            await mention.save();
-            res.status(200).json("unliked");
-          }
+          const updateObj = !mention.likes.includes(decodedToken.user)
+          ? { $push: { likes: decodedToken.user } }
+          : { $pull: { likes: decodedToken.user } };
+          await mention.updateOne(updateObj);
+          res.sendStatus(204);
         } else {
             res.json(false);
         }

@@ -4,21 +4,12 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Tooltip from '@material-ui/core/Tooltip';
 
 
-export default function Like({mention}) {
+export default function Like(props) {
 
-  const [like, setLike] = useState(mention.likes[0]);
+  const [like, setLike] = useState(props.like);
   const color = like ? 'primary' : 'disabled';
   const tip = like ? 'Unlike' : 'Like';
-
-  const mentionId = mention.id;
-
-  // useEffect(() => {
-  //   const getLike = async () => {
-  //     const res = await axios.get("http://localhost:3001/mention/getlike/", {params:{mentionId}});
-  //     setLike(res.data)
-  //   };
-  //   getLike();
-  // }, [mentionId]);
+  const { mentionId } = props;
 
   const queryData = {
     mentionId
