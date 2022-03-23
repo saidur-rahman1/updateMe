@@ -45,6 +45,13 @@ router.get("/", async (req, res) => {
                   {platform: { $in: user.platforms }}
                 ]
               }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
+              mentions.forEach((mention) => {
+                if (mention.likes.includes(decodedToken.user)) {
+                  mention.likes = true;
+                } else {
+                  mention.likes = false;
+                }
+              });
               res.json(mentions);
             }            
         } else {
@@ -61,6 +68,27 @@ router.get("/", async (req, res) => {
 // .then(mention => res.json(mention))
 // .catch(error => res.status(400).res.json(error));
 // });
+
+router.put("/like", async (req, res) => {
+  try {
+        const { token } = req.cookies;
+        const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
+        const queryData = req.body;
+        
+        if (decodedToken) {
+          const mention = await Mention.findOne({_id: queryData.mentionId});
+          const updateObj = !mention.likes.includes(decodedToken.user)
+          ? { $push: { likes: decodedToken.user } }
+          : { $pull: { likes: decodedToken.user } };
+          await mention.updateOne(updateObj);
+          res.sendStatus(204);
+        } else {
+            res.json(false);
+        }
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 router.get("/:id", async (req, res) => {
   try {

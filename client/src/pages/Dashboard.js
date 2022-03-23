@@ -14,6 +14,7 @@ import AuthContext from '../context/AuthContext.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { SocketContext } from '../context/Socket.js';
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -68,7 +69,6 @@ export default function Dashboard() {
   const [order, setOrder] = useState("date");
   const [hasMore, sethasMore] = useState(true);
   const [page, setPage] = useState(2);
-
   const [mentions, setMentions] = useState([]);
   const search = user.search;
 
@@ -167,7 +167,7 @@ export default function Dashboard() {
   return (
     <div className={classes.root}>
       <NavBar />
-      <Grid container xs={12}>
+      <Grid container item xs={12}>
         <Grid item xs={3}>
           <SideBar />
         </Grid>
@@ -208,18 +208,22 @@ export default function Dashboard() {
               loader={<h5>Loading ...</h5>}
             >
               <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
-              {mentions.map((mention) => (
-                  <Grid item key={mention._id} onClick={() => { handleClick(mention) }}>
-                    <Mention
-                      alt={mention.platform} 
-                      imgSource={mention.image} 
-                      title={mention.title}
-                      contentSource={mention.platform}
-                      text={mention.content}
-                      url={mention.url}
-                    />
+                {mentions.map((mention) => (
+                  <Grid container>
+                    <Grid container key={mention._id} onClick={() => { handleClick(mention) }}>
+                      <Mention
+                        id={mention._id}
+                        alt={mention.platform} 
+                        imgSource={mention.image} 
+                        title={mention.title}
+                        contentSource={mention.platform}
+                        text={mention.content}
+                        url={mention.url}
+                        likes={mention.likes}
+                      />
+                    </Grid>
                   </Grid>
-              ))}
+                ))}
             </InfiniteScroll>
           </Paper>
         </Grid>
