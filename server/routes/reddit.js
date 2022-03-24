@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { Mention } = require('../models/mention');
+const sentimentAnalysis = require('sentiment-analysis');
 
 async function reddit(searchTerm) {
     try {
@@ -7,6 +8,7 @@ async function reddit(searchTerm) {
         const results = outcome.data.data.children.map(data => data.data);
         results.forEach( async (element) => {
             try {
+                const currentSentiment = sentimentAnalysis(element.text);
                 //const elementImage = element.preview ? element.preview.images[0].source.url : 'https://www.howtogeek.com/wp-content/uploads/2019/12/Reddit-Karma-Header.jpg?height=200p&trim=2,2,2,2';
                 let elementImage = 'https://www.howtogeek.com/wp-content/uploads/2019/12/Reddit-Karma-Header.jpg?height=200p&trim=2,2,2,2';
                 const containsImage = element.thumbnail;
@@ -21,7 +23,8 @@ async function reddit(searchTerm) {
                         image: elementImage,
                         date: element.created_utc,
                         popularity: element.ups,
-                        url: element.url
+                        url: element.url,
+                        sentiment: currentSentiment
                     }, 
                 { upsert: true, useFindAndModify: false });
             } catch (error) {

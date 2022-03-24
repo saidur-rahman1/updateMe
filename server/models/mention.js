@@ -33,6 +33,10 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
     },
     likes: {
         type: []
+    },
+    sentiment: {
+        type: Number,
+        required: true
     }
 }));
 

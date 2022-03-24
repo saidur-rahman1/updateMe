@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import Like from './Like';
+import Sentiment from './Sentiment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,6 +70,7 @@ export default function Mention(props) {
               </Grid>
           </Grid>
           <Grid container justifyContent="flex-end" style={{ marginTop: '1rem', marginRight: '1rem', marginBottom: '0.5rem' }}>
+                <Sentiment sentiment={props.sentiment} />
                 <Like mentionId={props.id} like={props.likes[0]} />
             </Grid>
       </Paper>
