@@ -177,7 +177,7 @@ export default function Dashboard() {
               <Grid item>
                 My mentions
               </Grid>
-              <Grid item xs={6} />
+              <Grid item xs={4} />
               <Grid item>
                 <Grid item container className={classes.togglePaper}>
                   <ToggleButtonGroup
@@ -196,6 +196,15 @@ export default function Dashboard() {
                   >
                     <ToggleButton value="popularity" className={classes.toggle} onClick={() => { toggleClick() }}>
                       <Typography>Most popular</Typography>
+                    </ToggleButton>
+                  </ToggleButtonGroup>
+                  <ToggleButtonGroup
+                    value={order}
+                    exclusive
+                    onChange={handleOrder}
+                  >
+                    <ToggleButton value="sentiment" className={classes.toggle} onClick={() => { toggleClick() }}>
+                      <Typography>Best sentiment</Typography>
                     </ToggleButton>
                   </ToggleButtonGroup>
                 </Grid>
@@ -220,6 +229,8 @@ export default function Dashboard() {
                         text={mention.content}
                         url={mention.url}
                         likes={mention.likes}
+                        emoji={mention.emoji}
+                        sentiment={mention.sentiment}
                       />
                     </Grid>
                   </Grid>

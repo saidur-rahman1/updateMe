@@ -1,6 +1,7 @@
 const Twitter = require('twitter-v2');
 const { Mention } = require('../models/mention');
 const { createTitle } = require('../models/createTitle');
+const { sentiment } = require('../models/sentiment');
 const TOKEN = process.env.TWITTER_BEARER_TOKEN
 
 const client = new Twitter({
@@ -19,6 +20,7 @@ async function twitter(searchTerm) {
         results.forEach( async (element) => {
             try {
                 const unixDate = Math.floor(new Date(element.created_at).getTime()/1000);
+                const currentSentiment = (sentiment(element.text));
                 await Mention.findOneAndUpdate({id: element.id, platform: 'Twitter'}, 
                     {
                         id: element.id,
@@ -28,7 +30,9 @@ async function twitter(searchTerm) {
                         image: 'https://ommcom.s3.ap-south-1.amazonaws.com/wp-content/uploads/2021/06/16124057/twitter-logo-the-week.jpg',
                         date: unixDate,
                         popularity: element.public_metrics.retweet_count,
-                        url: `https://twitter.com/i/web/status/${element.id}`
+                        url: `https://twitter.com/i/web/status/${element.id}`,
+                        sentiment: currentSentiment[0],
+                        emoji: currentSentiment[1]
                     }, 
                 { upsert: true, useFindAndModify: false });
             } catch (error) {
