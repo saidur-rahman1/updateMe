@@ -12,16 +12,20 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-export default function Sentiment({emoji, sentiment}) {
+export default function Sentiment({sentiment}) {
     const classes = useStyles();
     let mood = '';
+    let emoji = '';
     
-    if (sentiment.$numberDecimal > 0) {
+    if (sentiment > 0) {
         mood = 'Positive sentiment';
-    } else if (sentiment.$numberDecimal < 0) {
+        emoji = '😃';
+    } else if (sentiment < 0) {
         mood = 'Negative sentiment';
+        emoji = '😕';
     } else {
-        mood = 'Neutral sentiment'
+        mood = 'Neutral sentiment';
+        emoji = '😐';
     }
 
     const click = (e) => {

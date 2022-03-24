@@ -1,7 +1,7 @@
 const Twitter = require('twitter-v2');
 const { Mention } = require('../models/mention');
 const { createTitle } = require('../models/createTitle');
-const { sentiment } = require('../models/sentiment');
+const sentimentAnalysis = require('sentiment-analysis');
 const TOKEN = process.env.TWITTER_BEARER_TOKEN
 
 const client = new Twitter({
@@ -20,7 +20,7 @@ async function twitter(searchTerm) {
         results.forEach( async (element) => {
             try {
                 const unixDate = Math.floor(new Date(element.created_at).getTime()/1000);
-                const currentSentiment = (sentiment(element.text));
+                const currentSentiment = sentimentAnalysis(element.text);
                 await Mention.findOneAndUpdate({id: element.id, platform: 'Twitter'}, 
                     {
                         id: element.id,
@@ -31,8 +31,7 @@ async function twitter(searchTerm) {
                         date: unixDate,
                         popularity: element.public_metrics.retweet_count,
                         url: `https://twitter.com/i/web/status/${element.id}`,
-                        sentiment: currentSentiment[0],
-                        emoji: currentSentiment[1]
+                        sentiment: currentSentiment
                     }, 
                 { upsert: true, useFindAndModify: false });
             } catch (error) {

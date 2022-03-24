@@ -35,11 +35,7 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
         type: []
     },
     sentiment: {
-        type: mongoose.Types.Decimal128,
-        required: true
-    },
-    emoji: {
-        type: String,
+        type: Number,
         required: true
     }
 }));

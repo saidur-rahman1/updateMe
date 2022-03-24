@@ -229,7 +229,6 @@ export default function Dashboard() {
                         text={mention.content}
                         url={mention.url}
                         likes={mention.likes}
-                        emoji={mention.emoji}
                         sentiment={mention.sentiment}
                       />
                     </Grid>
