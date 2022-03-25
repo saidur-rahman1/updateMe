@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sgMail = require('@sendgrid/mail')
 
 const User = require("../models/user");
 const { Mention, getMentions } = require("../models/mention");
@@ -60,6 +61,23 @@ router.post("/", async (req, res) => {
       },
       process.env.JWT_SECRET
     );
+
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+    const msg = {
+      to: email,
+      from: 'saidur.rahmann@gmail.com',
+      subject: 'Welcome to updateMe',
+      text: 'Get the latest updates from your favorite platforms',
+      html: 'Get the latest updates from your favorite platforms',
+    }
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log('Email sent')
+      })
+      .catch((error) => {
+        console.error(error)
+      })
 
     res.cookie("token", token, {
       httpOnly: true
