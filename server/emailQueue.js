@@ -11,15 +11,15 @@ eQueue.process(async (job, done) => {
             let regCompany = [];
             let order = 'date';
             for (let i=0 ; i < user.company.length ; i++) {
-            regCompany[i] = new RegExp(user.company[i], "i");
+                regCompany[i] = new RegExp(user.company[i], "i");
             }
             let mentions = await Mention.find({
                 $or: [
-                { content: { $in: regCompany } },
-                { title: { $in: regCompany } }
+                    { content: { $in: regCompany } },
+                    { title: { $in: regCompany } }
                 ],
                 $and: [
-                {platform: { $in: user.platforms }}
+                    {platform: { $in: user.platforms }}
                 ]
             }).sort({[order]: -1}).limit(10);
             
