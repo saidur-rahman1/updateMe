@@ -6,6 +6,7 @@ const logger = require("morgan");
 const mongoose = require('mongoose');
 const cors = require('cors');
 const { companyQueue } = require ('./companyQueue');
+const { emailQueue } = require ('./emailQueue');
 const reddit = require("./routes/reddit");
 const { Server } = require("socket.io");
 const http = require("http");
@@ -77,5 +78,6 @@ const io = new Server(server, { cors: {
 
 // Run the cron job
 companyQueue();
+emailQueue();
 
 module.exports = {app, server, io};

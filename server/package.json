@@ -8,6 +8,7 @@
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --timeout 30000"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.6.2",
     "axios": "^0.21.4",
     "body-parser": "^1.19.0",
     "bull": "^3.29.3",

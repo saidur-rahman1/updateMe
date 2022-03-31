@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sgMail = require('@sendgrid/mail')
 
 const User = require("../models/user");
 const { Mention, getMentions } = require("../models/mention");
 const reddit = require("../routes/reddit");
 const twitter = require("../routes/twitter");
+const sendEmail = require("../email");
 
 router.post("/", async (req, res) => {
 
@@ -64,6 +66,8 @@ router.post("/", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true
     }).status(201).json({email, company, token, platforms});
+
+    sendEmail.sendWelcome(email);
 
   } catch (error) {
     console.log(error);
