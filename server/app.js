@@ -18,7 +18,7 @@ const loginRouter = require("./routes/login");
 const mentionRouter = require("./routes/mention");
 const logoutRouter = require("./routes/logout");
 const userRouter = require("./routes/user");
-const authRouter = require("./middlewares/auth");
+//const authRouter = require("./middlewares/auth");
 
 const { json, urlencoded } = express;
 
@@ -46,7 +46,7 @@ app.use("/login", loginRouter);
 app.use("/mention", mentionRouter);
 app.use("/logout", logoutRouter);
 app.use("/user", userRouter);
-app.use("/auth", authRouter);
+//app.use("/auth", authRouter);
 
 
 // catch 404 and forward to error handler
