@@ -9,7 +9,6 @@ async function reddit(searchTerm) {
         results.forEach( async (element) => {
             try {
                 const currentSentiment = sentimentAnalysis(element.text);
-                //const elementImage = element.preview ? element.preview.images[0].source.url : 'https://www.howtogeek.com/wp-content/uploads/2019/12/Reddit-Karma-Header.jpg?height=200p&trim=2,2,2,2';
                 let elementImage = 'https://www.howtogeek.com/wp-content/uploads/2019/12/Reddit-Karma-Header.jpg?height=200p&trim=2,2,2,2';
                 const containsImage = element.thumbnail;
                 if (containsImage.includes('.jpg') || containsImage.includes('.png')) elementImage = element.thumbnail;

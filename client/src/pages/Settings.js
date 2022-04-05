@@ -200,14 +200,6 @@ export default function Settings() {
     setSnackbar(false);
   };
 
-  // const [mentions, setMentions] = useState([]);
-  // useEffect(() => {
-  //   axios
-  //   .get("http://localhost:3001/mention/")
-  //   .then(res => setMentions(res.data))
-  //   .catch(error => console.log(error));
-  // }, []);
-
   return (
     <div>
       <NavBar />
