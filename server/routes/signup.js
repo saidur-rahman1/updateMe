@@ -2,10 +2,8 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const sgMail = require('@sendgrid/mail')
 
 const User = require("../models/user");
-const { Mention, getMentions } = require("../models/mention");
 const reddit = require("../routes/reddit");
 const twitter = require("../routes/twitter");
 const sendEmail = require("../email");
@@ -45,16 +43,6 @@ router.post("/", async (req, res) => {
     const salt = await bcrypt.genSalt();
     user.password = await bcrypt.hash(user.password, salt);
     await user.save();
-
-    // let mention = new Mention({
-    //   content: 'The new 16" Macbook is coming this October. This model is rumoured to come with the powerful M1X processor',
-    //   title: 'Apple\'s 16" Macbook with M1X processor coming this fall - Facebook',
-    //   platform: 'Facebook',
-    //   image: 'image-apple16-facebook',
-    //   date: new Date(),
-    //   popularity: '1'
-    // });
-    // await mention.save();
 
     const token = jwt.sign(
       {

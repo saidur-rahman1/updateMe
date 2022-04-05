@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const { companyQueue } = require ('./companyQueue');
 const { emailQueue } = require ('./emailQueue');
-const reddit = require("./routes/reddit");
 const { Server } = require("socket.io");
 const http = require("http");
 
@@ -18,7 +17,6 @@ const loginRouter = require("./routes/login");
 const mentionRouter = require("./routes/mention");
 const logoutRouter = require("./routes/logout");
 const userRouter = require("./routes/user");
-const authRouter = require("./middlewares/auth");
 
 const { json, urlencoded } = express;
 
@@ -46,8 +44,6 @@ app.use("/login", loginRouter);
 app.use("/mention", mentionRouter);
 app.use("/logout", logoutRouter);
 app.use("/user", userRouter);
-app.use("/auth", authRouter);
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

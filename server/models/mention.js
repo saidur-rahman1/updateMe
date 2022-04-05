@@ -40,23 +40,4 @@ const Mention = mongoose.model('Mention', new mongoose.Schema({
     }
 }));
 
-async function getMentions (platform, company) {
-
-    const regPlatform = new RegExp(platform, "i");
-    const regCompany = new RegExp(company, "i");
-
-    try {
-        const mentions = await Mention
-        .find({ platform: regPlatform })
-        .or([
-            {title: regCompany}, 
-            {content: regCompany}
-        ])
-        .exec();
-    } catch (error) {
-        console.log(error);
-    }
-    
-}
-
-module.exports = { Mention, getMentions };
+module.exports = { Mention };
