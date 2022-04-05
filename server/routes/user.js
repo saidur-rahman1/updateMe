@@ -69,7 +69,8 @@ userRouter.put("/platform", auth, async (req, res) => {
         }
             
         user.platforms = updatedPlatforms;
-        await user.save();
+        //await user.save();
+        await User.findOneAndUpdate({ _id: user.id }, user);
         const { platforms } = user;
         res.json({platforms});
 
@@ -101,7 +102,8 @@ userRouter.put("/save", auth, async (req, res) => {
 
         user.company = [...saveData.company];
         user.email = saveData.email;
-        await user.save();
+        await User.findOneAndUpdate({ _id: user.id }, user);
+        //await user.save();
 
         let companyList = [...saveData.company]
         for (let company of companyList) {

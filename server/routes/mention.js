@@ -61,7 +61,7 @@ router.get("/", auth, async (req, res) => {
 
         const {order, page, search} = req.query;
         const user = req.user;
-        const decodedToken = req.decodedToken;
+        //const decodedToken = req.decodedToken;
 
         const MAX_MENTIONS_PER_PAGE = 20;
         const skip = (page - 1) * MAX_MENTIONS_PER_PAGE; 
@@ -95,7 +95,7 @@ router.get("/", auth, async (req, res) => {
             ]
           }).sort({[order]: -1}).skip(skip).limit(MAX_MENTIONS_PER_PAGE);
           mentions.forEach((mention) => {
-            if (mention.likes.includes(decodedToken.user)) {
+            if (mention.likes.includes(user.id)) {
               mention.likes = true;
             } else {
               mention.likes = false;
@@ -133,12 +133,13 @@ router.put("/like", auth, async (req, res) => {
         // }
 
         const queryData = req.body;
-        const decodedToken = req.decodedToken;
+        //const decodedToken = req.decodedToken;
+        const user = req.user;
         
         const mention = await Mention.findOne({_id: queryData.mentionId});
-        const updateObj = !mention.likes.includes(decodedToken.user)
-        ? { $push: { likes: decodedToken.user } }
-        : { $pull: { likes: decodedToken.user } };
+        const updateObj = !mention.likes.includes(user.id)
+        ? { $push: { likes: user.id } }
+        : { $pull: { likes: user.id } };
         await mention.updateOne(updateObj);
         res.sendStatus(204);
 
