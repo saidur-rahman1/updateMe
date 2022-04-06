@@ -116,7 +116,7 @@ export default function SignUp() {
           setRedirect('/dashboard');
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
         dispatch({ type: "LOGIN_FAILURE", payload: err });
       }
 

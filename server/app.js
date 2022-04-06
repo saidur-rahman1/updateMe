@@ -20,7 +20,7 @@ const userRouter = require("./routes/user");
 
 const { json, urlencoded } = express;
 
-var app = express();
+let app = express();
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.header('origin'));
@@ -67,7 +67,7 @@ mongoose.connect(`mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`)
 .catch(error => console.error("Could not connect to MongoDB", error));
 
 // Initial Socket.io
-var server = http.createServer(app);
+let server = http.createServer(app);
 const io = new Server(server, { cors: {
   origin: "http://localhost:3000",
 }, });

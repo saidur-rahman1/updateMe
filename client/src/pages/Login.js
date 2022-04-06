@@ -87,7 +87,7 @@ export default function Login(props) {
           setRedirect(state?.from ?? '/dashboard');
         }
       } catch (err) {
-        console.log(err);
+        console.error(err);
         dispatch({ type: "LOGIN_FAILURE", payload: err });
       }
 

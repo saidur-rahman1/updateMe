@@ -42,13 +42,16 @@ export default function SideBar() {
     }));
   
     const handleInputChange = async (e) => {
-      const { name, checked } = e.target
-      const newValues = { ...values, [name]: checked };
-      setValues(newValues);
-      const { data } = await axios.put("http://localhost:3001/user/platform", newValues);
-      dispatch({ type: "UPDATE_PLATFORMS", platforms: data.platforms });
+      try {
+        const { name, checked } = e.target
+        const newValues = { ...values, [name]: checked };
+        setValues(newValues);
+        const { data } = await axios.put("http://localhost:3001/user/platform", newValues);
+        dispatch({ type: "UPDATE_PLATFORMS", platforms: data.platforms });
+      } catch (error) {
+        console.error(error);
+      }
     }
-  
   
     return (
           <Grid item xs={12} container className={classes.gridHeight}>
