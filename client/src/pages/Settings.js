@@ -174,7 +174,6 @@ export default function Settings() {
   }
 
   async function handleSave (e) {
-
     e.preventDefault()
     const err = finalValidation();
     if (!err) {
@@ -184,12 +183,15 @@ export default function Settings() {
         email, company
       };
 
-      const savedUser = await axios.put("http://localhost:3001/user/save", saveData);
-      dispatch({ type: "UPDATE_USER", payload: savedUser.data });
-      if (savedUser.data !== false) {
-        setSnackbar(true);
+      try {
+        const savedUser = await axios.put("http://localhost:3001/user/save", saveData);
+        dispatch({ type: "UPDATE_USER", payload: savedUser.data });
+        if (savedUser.data !== false) {
+          setSnackbar(true);
+        }
+      } catch (error) {
+        console.error(error);
       }
-
     }
   }
 

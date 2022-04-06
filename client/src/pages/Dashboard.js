@@ -73,9 +73,13 @@ export default function Dashboard() {
   const search = user.search;
 
   const socketMentions = useCallback(async () => {
-    const page = 1;
-    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
-    setMentions(res.data);
+    try {
+      const page = 1;
+      const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
+      setMentions(res.data);
+    } catch (error) {
+      console.error(error);
+    }
   }, [order, search])
 
   useEffect(() => {
@@ -92,7 +96,7 @@ export default function Dashboard() {
         const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
         setMentions(res.data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     fetchData();
@@ -104,9 +108,13 @@ export default function Dashboard() {
 }, [user.platforms, search]);
 
   const getMentions = async () => {
-    const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
-    const data = await res.data;
-    return data;
+    try {
+      const res = await axios.get("http://localhost:3001/mention/", {params:{order,page,search}});
+      const data = res.data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getMore = async () => {
@@ -120,7 +128,7 @@ export default function Dashboard() {
 
       setPage(prevPage => prevPage + 1);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -133,19 +141,24 @@ export default function Dashboard() {
   }, [sortMentions, order]);
 
   useEffect(() => {
-    const openMentionDialog = (mention) => {
-      setMention(mention);
-      setOpen(true);
+    async function mentionDialog() {
+      try {
+        const openMentionDialog = (mention) => {
+          setMention(mention);
+          setOpen(true);
+        }
+        const foundMention = mentions.find(mention => mention._id === id)
+        if (foundMention) {
+          openMentionDialog(foundMention)
+        } else if (id) {
+            const res = await axios.get(`http://localhost:3001/mention/${id}`);
+            openMentionDialog(res.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-    const foundMention = mentions.find(mention => mention._id === id)
-    if (foundMention) {
-      openMentionDialog(foundMention)
-    } else if (id) {
-      axios
-        .get(`http://localhost:3001/mention/${id}`)
-        .then(res => openMentionDialog(res.data))
-        .catch(error => console.error(error))
-    }
+    mentionDialog();
   }, [id, mentions]);
   
   const handleClick = (mention) => {

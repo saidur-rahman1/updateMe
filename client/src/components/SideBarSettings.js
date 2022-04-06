@@ -40,10 +40,14 @@ export default function SideBarSettings() {
     const {dispatch} = useContext(AuthContext);
 
     async function logout() {
-      let outcome = await axios.get("http://localhost:3001/logout/");
-      if (outcome.status === 201) {
-        dispatch({ type: "LOGIN_START" });
-        history.push('/login');
+      try {
+        let outcome = await axios.get("http://localhost:3001/logout/");
+        if (outcome.status === 201) {
+          dispatch({ type: "LOGIN_START" });
+          history.push('/login');
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
   

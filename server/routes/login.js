@@ -35,7 +35,7 @@ router.post("/", async (req, res) => {
     }).status(201).json({email, company, token, platforms});
 
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json(error);
   }
   

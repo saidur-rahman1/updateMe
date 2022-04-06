@@ -16,11 +16,14 @@ export default function Like(props) {
   };
 
   const likeClick = async (e) => {
-    e.stopPropagation();
-    await axios.put("http://localhost:3001/mention/like", queryData);
-    setLike(prevLike => !prevLike);
+    try {
+      e.stopPropagation();
+      await axios.put("http://localhost:3001/mention/like", queryData);
+      setLike(prevLike => !prevLike);
+    } catch (error) {
+      console.error(error);
+    }
   }
-
 
   return (
     <Tooltip title={tip} placement="bottom">

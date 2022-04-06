@@ -5,9 +5,13 @@ const twitter = require('./routes/twitter');
 const mQueue = new Queue('Mentions Queue');
 
 mQueue.process(async (job, done) => {
-    await reddit(job.data.company);
-    await twitter(job.data.company);
-    done();
+    try {
+        await reddit(job.data.company);
+        await twitter(job.data.company);
+        done();
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 

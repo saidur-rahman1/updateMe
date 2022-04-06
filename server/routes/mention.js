@@ -50,7 +50,7 @@ router.get("/", auth, async (req, res) => {
           res.json(mentions);
         }            
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
 
@@ -75,7 +75,7 @@ router.put("/like", auth, async (req, res) => {
 
 
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 });
 
