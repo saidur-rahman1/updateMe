@@ -231,7 +231,6 @@ export default function Dashboard() {
             >
               <CustomizedDialog open={open} close={() => setOpen(false)} mention={mention} />
                 {mentions.map((mention) => (
-                  <Grid container>
                     <Grid container key={mention._id} onClick={() => { handleClick(mention) }}>
                       <Mention
                         id={mention._id}
@@ -245,7 +244,6 @@ export default function Dashboard() {
                         sentiment={mention.sentiment}
                       />
                     </Grid>
-                  </Grid>
                 ))}
             </InfiniteScroll>
           </Paper>

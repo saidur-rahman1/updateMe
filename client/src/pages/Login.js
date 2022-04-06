@@ -110,9 +110,9 @@ export default function Login(props) {
   }
 
     return (
-      <Grid component="main" container justify="center">
+      <Grid component="main" container justifyContent="center">
         <Grid item xs={12} container className={classes.topBar}>
-          <Grid item xs={3} container alignItems="center" justify="center">
+          <Grid item xs={3} container alignItems="center" justifyContent="center">
             <Typography component="h2" variant="h5" className={classes.typography_update}>
                 update
             </Typography>
@@ -120,12 +120,12 @@ export default function Login(props) {
                 Me
             </Typography>
           </Grid>
-          <Grid item xs={7} container alignItems="center" justify="flex-end">
+          <Grid item xs={7} container alignItems="center" justifyContent="flex-end">
             <Typography component="h2" className={classes.typography_redirect}>
               Don't have an account?
             </Typography>
           </Grid>
-          <Grid item xs={2} container alignItems="center" justify="flex-start">
+          <Grid item xs={2} container alignItems="center" justifyContent="flex-start">
               <Button 
               className={classes.button}
               component={Link} to="/"
@@ -144,7 +144,7 @@ export default function Login(props) {
             Login to your account
           </Typography>
              <form className={classes.form} onSubmit={handleSubmit} noValidate>
-               <Grid container spacing={2} justify="center">
+               <Grid container spacing={2} justifyContent="center">
                   <Grid item xs={12}>
                     <TextField
                       className={classes.root}
