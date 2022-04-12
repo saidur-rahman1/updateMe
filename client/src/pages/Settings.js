@@ -217,8 +217,8 @@ export default function Settings() {
               </Grid>
               <Grid item xs={7}>
                 {companies.map((company) => (
-                  <Grid item key={company + Math.floor(Date.now() / 1000)} >
                     <TextField
+                      key={company + Math.floor(Date.now() / 1000)}
                       fullWidth
                       className={classes.root}
                       variant="outlined"
@@ -233,7 +233,6 @@ export default function Settings() {
                         </Grid>
                       }}
                     />
-                  </Grid>
                 ))}
                 <TextField 
                   fullWidth
@@ -281,8 +280,9 @@ export default function Settings() {
                 />
               </Grid>
             </Grid>
-            <Grid item container className={classes.marginLeft} onClick={handleSave}>
+            <Grid item container className={classes.marginLeft}>
               <Button
+                onClick={handleSave}
                 type="submit"
                 variant="contained"
                 color="primary"
