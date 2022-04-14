@@ -10,8 +10,6 @@ const { emailQueue } = require ('./emailQueue');
 const { Server } = require("socket.io");
 const http = require("http");
 
-const indexRouter = require("./routes/index");
-const pingRouter = require("./routes/ping");
 const signupRouter = require("./routes/signup");
 const loginRouter = require("./routes/login");
 const mentionRouter = require("./routes/mention");
@@ -37,8 +35,6 @@ app.use(cors({
   credentials: true
 }));
 
-app.use("/", indexRouter);
-app.use("/ping", pingRouter);
 app.use("/signup", signupRouter);
 app.use("/login", loginRouter);
 app.use("/mention", mentionRouter);
