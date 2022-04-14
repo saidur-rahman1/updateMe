@@ -205,7 +205,7 @@ export default function Settings() {
   return (
     <div>
       <NavBar />
-      <Grid container item xs={12}>
+      <Grid container xs={12}>
         <Grid item xs={3}>
           <SideBarSettings />
         </Grid>
@@ -217,22 +217,21 @@ export default function Settings() {
               </Grid>
               <Grid item xs={7}>
                 {companies.map((company) => (
-                    <TextField
-                      key={company + Math.floor(Date.now() / 1000)}
-                      fullWidth
-                      className={classes.root}
-                      variant="outlined"
-                      margin="normal"
-                      name="company"
-                      placeholder="Company name"
-                      id="company"
-                      value={company}
-                      InputProps={{endAdornment: 
-                        <Grid item xs onClick={() => { removeCompany(company) }}>
-                          <Button className={classes.remove}>REMOVE</Button>
-                        </Grid>
-                      }}
-                    />
+                  <TextField
+                    fullWidth
+                    className={classes.root}
+                    variant="outlined"
+                    margin="normal"
+                    name="company"
+                    placeholder="Company name"
+                    id="company"
+                    value={company}
+                    InputProps={{endAdornment: 
+                      <Grid item xs onClick={() => { removeCompany(company) }}>
+                        <Button className={classes.remove}>REMOVE</Button>
+                      </Grid>
+                    }}
+                  />
                 ))}
                 <TextField 
                   fullWidth
@@ -280,9 +279,8 @@ export default function Settings() {
                 />
               </Grid>
             </Grid>
-            <Grid item container className={classes.marginLeft}>
+            <Grid item container className={classes.marginLeft} onClick={handleSave}>
               <Button
-                onClick={handleSave}
                 type="submit"
                 variant="contained"
                 color="primary"

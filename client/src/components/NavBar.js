@@ -29,9 +29,9 @@ export default function NavBar() {
 
   return (
         <Grid item xs={12} container className={classes.topBar}>
-          <Grid item xs={3} container alignItems="center" justifyContent="center">
+          <Grid item xs={3} container alignItems="center" justify="center">
             <Link to="/dashboard" style={{ textDecoration: "none" }}>
-              <Grid item container alignItems="center" justifyContent="center" style={{ textDecoration: 'none' }}>
+              <Grid item container alignItems="center" justify="center" style={{ textDecoration: 'none' }}>
                   <Typography component="h2" variant="h5" className={classes.typography_update}>
                       update
                   </Typography>
@@ -41,7 +41,7 @@ export default function NavBar() {
               </Grid>
             </Link>
           </Grid>
-          <Grid item xs={7} container alignItems="center" justifyContent="center">
+          <Grid item xs={7} container alignItems="center" justify="center">
             <TextField
               className={classes.debouncedSearch}
               variant="outlined"
@@ -53,7 +53,7 @@ export default function NavBar() {
               onChange={handleInputChange}
             />
           </Grid>
-          <Grid item xs={2} container alignItems="center" justifyContent="flex-end">
+          <Grid item xs={2} container alignItems="center" justify="flex-end">
             <Typography component="h2" variant="h5">
               <Link to="/settings" style={{ textDecoration: "none" }}>
                 <Button className={classes.typography_settings}
