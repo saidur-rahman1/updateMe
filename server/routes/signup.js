@@ -12,7 +12,8 @@ router.post("/", async (req, res) => {
 
   try {
     
-    const { email, company, password1, password2 } = req.body;
+    const { email, password1, password2 } = req.body;
+    let company = req.body.company;
 
     if (!email || !company || !password1 || !password2) {
       return res.status(400).send("All required fields not complete");
@@ -50,6 +51,8 @@ router.post("/", async (req, res) => {
       },
       process.env.JWT_SECRET
     );
+
+    company = companyList;
 
     res.cookie("token", token, {
       httpOnly: true
