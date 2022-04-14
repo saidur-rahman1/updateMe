@@ -6,10 +6,10 @@ const User = mongoose.model('User', new mongoose.Schema({
         required: true,
         unique: true
     },
-    // email2: {
-    //     type: String,
-    //     unique: true
-    // },
+    email2: {
+        type: String,
+        unique: true
+    },
     company: {
         type: [],
         required: true
